@@ -1,0 +1,72 @@
+<app-breadcrumb [crumbs]="breadcrumbs"/>
+<div class="inner-content">
+  <div class="flex flex-row justify-between gap-3 mb-5">
+    <p class="infinity-title">Logs Information</p>
+  </div>
+
+  @if (loading) {
+    <div class="h-[400px]">
+      <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
+    </div>
+  } @else {
+    <div>
+      @if (tableData && tableData.length > 0) {
+        <nz-table #logsTable class="mt-8" [nzData]="tableData" nzSize="middle" [nzOuterBordered]="true"
+                  [nzScroll]="{ x: '1180px' }" nzTableLayout="fixed" [nzFrontPagination]="false">
+          <thead>
+          <tr class="text-center">
+            <th class="infinity-thead text-start">Operator ID</th>
+            <th>Operator</th>
+            <th>Role</th>
+            <th>Type</th>
+            <th>Message</th>
+            <th>
+              <div class="flex justify-center w-full items-center pr-2">
+                <span>Created Date</span>
+                @if (sortOrder === -1) {
+                  <span class="cursor-pointer" (click)="sort()"><span nz-icon nzType="caret-up"
+                                                                      nzTheme="outline"></span></span>
+                } @else {
+                  <span class="cursor-pointer" (click)="sort()"><span nz-icon nzType="caret-down"
+                                                                      nzTheme="outline"></span></span>
+                }
+              </div>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+
+            @for (item of tableData; track item._id) {
+              <tr class="text-center">
+                <td class="clickable-field text-start">{{ item.userRefNo }}</td>
+                <td class="clickable-field text-start">{{ item.user }}</td>
+                <td>{{ item.role | underscoreToSpace }}</td>
+                <td>{{ item.type }}</td>
+                <td>{{ item.message }}</td>
+                <td>{{ item.createdAt | date: 'mediumDate' }}</td>
+              </tr>
+            }
+
+          </tbody>
+
+        </nz-table>
+      } @else if (tableData.length === 0) {
+        <div class="text-center my-5">
+          <div class="py-36 bg-[#FFF7F7] rounded-md border-[0.5px] border-[#BD1A43]">
+            <p class="text-[#BD1A43]">No Results Available</p>
+          </div>
+        </div>
+      }
+
+
+    </div>
+  }
+  <div class="flex flex-row justify-end items-center">
+    <nz-pagination class="mt-4 flex items-end justify-end" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize"
+                   [nzTotal]="totalRecords" (nzPageIndexChange)="onPageChange($event)">
+    </nz-pagination>
+  </div>
+
+
+</div>
+

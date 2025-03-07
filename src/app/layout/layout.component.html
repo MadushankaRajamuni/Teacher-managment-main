@@ -1,0 +1,89 @@
+<nz-layout class="">
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" class="">
+    <div class="flex h-[200dvh] flex-col pb-3">
+      <div class="logo" [ngClass]="{'': !isCollapsed, 'hidden': isCollapsed}">
+        <img src="/assets/logo.png" class="w-full h-full object-contain" alt="Logo">
+      </div>
+      <ul nz-menu nzTheme="dark" nzMode="inline">
+        <li nz-menu-item (click)="routeLink('DASHBOARD')"
+            [nzSelected]="router.isActive(routeLinkActive('DASHBOARD'), true)">
+          <nz-icon nzType="dashboard"/>
+          <span>Dashboard</span>
+        </li>
+        <li nz-submenu nzTitle="User" nzIcon="user">
+          <ul>
+            <li nz-menu-item (click)="routeLink('USERS')"
+                [nzSelected]="router.isActive(routeLinkActive('USERS'), true)">View Users
+            </li>
+            <li nz-menu-item (click)="routeLink('USER_ADD')"
+                [nzSelected]="router.isActive(routeLinkActive('USER_ADD'), true)">Add User
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Teachers" nzIcon="team">
+          <ul>
+            <li nz-menu-item (click)="routeLink('EMPLOYEE')"
+                [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE'), true)">View Teachers</li>
+            <li nz-menu-item (click)="routeLink('EMPLOYEE_ADD')"
+                [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE_ADD'), true)">Add Teacher</li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Department" nzIcon="branches">
+          <ul>
+            <li nz-menu-item (click)="routeLink('DEPART')"
+                [nzSelected]="router.isActive(routeLinkActive('DEPART'), true)">View Departments</li>
+            <li nz-menu-item (click)="routeLink('DEPART_ADD')"
+                [nzSelected]="router.isActive(routeLinkActive('DEPART_ADD'), true)">Add Department</li>
+          </ul>
+        </li>
+        <li nz-menu-item (click)="routeLink('LOGS')"
+            [nzSelected]="router.isActive(routeLinkActive('LOGS'), true)">
+          <nz-icon nzType="container"/>
+          <span>Logs Info</span>
+        </li>
+      </ul>
+    </div>
+  </nz-sider>
+  <nz-layout class="content-header">
+    <div class="bg-white">
+      <div class="flex justify-between items-center">
+        <div>
+          <span
+            class="trigger"
+            nz-icon
+            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            (click)="isCollapsed = !isCollapsed"
+          ></span>
+        </div>
+          <div class="flex my-2 gap-2 profile-detail" style="padding-right: 24px">
+            <div class="flex flex-col">
+              <p class="font-semibold text-end">{{ loggedInUser?.name }}</p>
+              <p class="text-[#919191] text-end">{{ loggedInUser?.role?.name | underscoreToSpace  }}</p>
+            </div>
+            <div  nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter" class="cursor-pointer">
+              <img
+                id="profile-img"
+                nz-image
+                class="rounded-full bg-gray-200"
+                nzDisablePreview
+                [nzSrc]="loggedInUser?.imageUrl"
+                alt=""
+              />
+            </div>
+          </div>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li id="logout-btn" nz-menu-item (click)="logout()">
+              Logout
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+
+      </div>
+    </div>
+    <nz-content>
+      <router-outlet></router-outlet>
+    </nz-content>
+    <nz-footer>©2025 Implement By MIT GROUP 03</nz-footer>
+  </nz-layout>
+</nz-layout>

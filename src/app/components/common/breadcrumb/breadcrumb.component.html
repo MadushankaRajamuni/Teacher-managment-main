@@ -1,0 +1,5 @@
+<nz-breadcrumb class="breadcrumb">
+  @for (c of crumbs; track c.name) {
+    <nz-breadcrumb-item class="cursor-pointer" [routerLink]="c.path">{{ c.name }}</nz-breadcrumb-item>
+  }
+</nz-breadcrumb>

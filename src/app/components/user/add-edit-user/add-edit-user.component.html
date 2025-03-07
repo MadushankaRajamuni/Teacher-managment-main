@@ -1,0 +1,104 @@
+<app-breadcrumb [crumbs]="breadcrumbs"/>
+<div class="inner-content">
+  <p class="infinity-title">Add New User</p>
+
+  <form nz-form [formGroup]="userForm" [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
+    <!-- Form content -->
+    <div class="infinity-section">
+      <div class="col-span-10">
+        <div class="flex flex-col">
+          <nz-form-item>
+            <p class="infinity-lable">First Name <span>*</span></p>
+            <nz-form-control>
+              <nz-input-group nzSize="large">
+                <input formControlName="firstname" nz-input placeholder="Enter First Name"/>
+              </nz-input-group>
+            </nz-form-control>
+            @if (formErrors?.firstname?.required) {
+              <p class="text-red-400 text-sm mt-1">First Name is required.</p>
+            }
+          </nz-form-item>
+
+          <nz-form-item>
+            <p class="infinity-lable">Last Name <span>*</span></p>
+            <nz-form-control>
+              <nz-input-group nzSize="large">
+                <input formControlName="lastname" nz-input placeholder="Enter Last Name"/>
+              </nz-input-group>
+            </nz-form-control>
+           @if (formErrors?.lastname?.required) {
+              <p class="text-red-400 text-sm mt-1">Last Name is required.</p>
+            }
+          </nz-form-item>
+
+          <nz-form-item>
+            <p class="infinity-lable">Email Address <span>*</span></p>
+            <nz-form-control>
+              <nz-input-group nzSize="large">
+                <input nz-input formControlName="email" placeholder="Enter Email Address"/>
+              </nz-input-group>
+            </nz-form-control>
+            @if (formErrors?.email.email) {
+              <p class="text-red-400 text-sm mt-1">Email pattern is not completed.</p>
+            } @else if (formErrors?.email.required) {
+              <p class="text-red-400 text-sm mt-1">Email is required.</p>
+            }
+          </nz-form-item>
+
+          <nz-form-item>
+            <p class="infinity-lable">Mobile Number <span>*</span></p>
+            <nz-form-control>
+              <nz-input-group nzSize="large" class="flex gap-3">
+                <input nz-input formControlName="mobile" placeholder="Enter Mobile Number" maxlength="10"/>
+              </nz-input-group>
+            </nz-form-control>
+            @if (formErrors?.mobile.maxLength) {
+              <p class="text-red-400 text-sm mt-1">Number length is 10.</p>
+            } @else if (formErrors?.mobile.required) {
+              <p class="text-red-400 text-sm mt-1">Mobile is required.</p>
+            } @else if (formErrors?.mobile.pattern) {
+              <p class="text-red-400 text-sm mt-1">Numbers only.</p>
+            }
+          </nz-form-item>
+
+          <nz-form-item>
+            <p class="infinity-lable">Role <span>*</span></p>
+            <nz-form-control>
+              <nz-select formControlName="role">
+                @for (c of roles; track c._id) {
+                  <nz-option [nzLabel]="c.name | underscoreToSpace" [nzValue]="c._id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <p class="infinity-lable">Profile Picture</p>
+            <nz-upload
+              class="avatar-uploader"
+              nzAction="{{SETTINGS.BASE_API}}/files/upload"
+              nzName="avatar"
+              nzListType="picture-card"
+              [nzShowUploadList]="false"
+              (nzChange)="handleChange($event)"
+            >
+              @if (!imageUrl) {
+                <span class="upload-icon" nz-icon [nzType]="uploading ? 'loading' : 'plus'"></span>
+                <div class="ant-upload-text">Upload</div>
+              } @else {
+                <img [src]="imageUrl" alt="" style="width: 100%" />
+              }
+            </nz-upload>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-row justify-end my-5">
+      <button class="w-fit rounded-md" type="submit" nz-button nzType="primary" (click)="saveUser()" [disabled]="userForm.invalid">
+        Save New User
+      </button>
+    </div>
+  </form>
+
+</div>

@@ -1,0 +1,54 @@
+<div class="bg-[#F9FBFF]">
+  <div class="min-h-screen w-full flex flex-col justify-between">
+    <div class="my-auto 2xl:mt-32 mb-0 h-[60px]">
+      <img src="/assets/logo.png" class="w-full h-full object-contain" alt="Logo">
+    </div>
+    <div class="w-[360px] mx-auto my-auto flex flex-col">
+      <h1 class="text-[1.5rem] mx-6 md:mx-0">LOG IN</h1>
+      <form nz-form [formGroup]="loginForm" [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0"
+            (ngSubmit)="onLogin()">
+        <div class="flex flex-col">
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Please input your email!">
+              <nz-input-group  [nzPrefix]="userPrefixTemplate">
+                <input formControlName="email" nz-input placeholder="Email Address" />
+              </nz-input-group>
+              <ng-template #userPrefixTemplate>
+                <i nz-icon nzType="mail"></i>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="mb-0">
+            <nz-form-control nzErrorTip="Please input your password!">
+              <nz-input-group  [nzPrefix]="lockPrefixTemplate"
+                               [nzSuffix]="toggleIconTemplate">
+                <input [type]="passwordVisible ? 'text' : 'password'" formControlName="password"
+                       nz-input placeholder="Password" />
+              </nz-input-group>
+              <ng-template #lockPrefixTemplate>
+                <i nz-icon nzType="lock"></i>
+              </ng-template>
+              <ng-template #toggleIconTemplate>
+                <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" nzTheme="outline"
+                   (click)="togglePasswordVisibility()"></i>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <a nz-button nzType="link" class="pl-0 text-[#3E4A58] my-4" (click)="navigate()">Forgot Your Password?</a>
+        <button class="" nz-button nzType="primary" nzBlock [nzLoading]="btnLoading"
+                [disabled]="loginForm.invalid">
+          <strong>Sign In</strong>
+        </button>
+      </form>
+      <nz-alert *ngIf="actionMessage.display" class="mt-2 mx-6 md:mx-0" [nzType]="actionMessage.type"
+                [nzMessage]="actionMessage.message" nzShowIcon></nz-alert>
+    </div>
+    <div class="mb-8 mt-auto flex flex-col items-center justify-center">
+      <div class="h-[30px]">
+        <img src="/assets/logo.png" class="w-full h-full object-contain" alt="Logo">
+      </div>
+      <div class="text-[#64748B] text-[0.6875rem] mt-2">Powered By <a href="" target="_blank"><span class="text-[#6C066D] text-[0.75rem]">Edhirya Software (Pvt) Ltd </span></a></div>
+    </div>
+  </div>
+</div>

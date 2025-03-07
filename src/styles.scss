@@ -1,0 +1,96 @@
+/* You can add global styles to this file, and also import other style files */
+
+//@import "tailwindcss";
+@use "tailwindcss";
+
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-size: 16px; /* 16px / 16 = 1rem */
+}
+
+.inner-content {
+  padding: 24px;
+  background: #fff;
+  //min-height: 100%;
+  overflow: auto;
+}
+
+
+.infinity-title {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #3e4a58;
+}
+#warn-text {
+  color: #1890ff ;
+}
+
+.infinity-section {
+  border-bottom: 1px solid #d9d9d9;
+  margin-top: 1.25rem; /* equivalent to my-5 */
+  display: grid; /* equivalent to grid */
+  grid-template-columns: repeat(12, 1fr); /* equivalent to grid-cols-12 */
+  gap: 1.25rem; /* equivalent to gap-5 */
+  padding-bottom: 4.25rem; /* equivalent to pb-5 */
+
+  .ant-input {
+    border-radius: 6px !important;
+    font-size: 0.875rem;
+  }
+
+  .infinity-lable {
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin-bottom: 5px !important;
+    color: #3e4a58;
+
+    span {
+      color: #C94566;
+    }
+  }
+
+  .infinity-single-view-lable {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #7A7C7E;
+  }
+
+  .infinity-single-view-value {
+    font-size: 1rem;
+    color: #3E4A58;
+    font-weight: 400;
+  }
+
+  .infinity-data-block {
+    margin-top: 20px;
+  }
+
+  .ant-form-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .ant-select-selector {
+    border-radius: 6px !important;
+    font-size: 0.875rem;
+  }
+
+  .ant-btn {
+    border-radius: 6px;
+  }
+
+  .ant-table-thead {
+    tr {
+      th {
+        background-color: rgb(255, 255, 255) !important;
+        color: #C94566;
+      }
+    }
+  }
+}
+
+.ant-upload.ant-upload-select-picture-card {
+  width: 200px;
+  height: 200px;
+}

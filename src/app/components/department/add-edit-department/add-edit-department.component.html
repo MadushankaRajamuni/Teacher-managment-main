@@ -1,0 +1,61 @@
+<app-breadcrumb [crumbs]="breadcrumbs"/>
+<div class="inner-content">
+  <p class="infinity-title">
+    @if (depId) {
+      Update Department
+    } @else {
+      Add New Department
+    }
+  </p>
+
+  @if (loading) {
+    <div class="h-[400px]">
+      <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
+    </div>
+  } @else {
+
+  <form nz-form [formGroup]="departForm" [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
+    <!-- Form content -->
+    <div class="infinity-section">
+      <div class="col-span-10">
+        <div class="flex flex-col">
+          <nz-form-item>
+            <p class="infinity-lable">Department Name <span>*</span></p>
+            <nz-form-control>
+              <nz-input-group nzSize="large">
+                <input formControlName="depName" nz-input placeholder="Enter Department Name"/>
+              </nz-input-group>
+            </nz-form-control>
+            @if (formErrors?.depName?.required) {
+              <p class="text-red-400 text-sm mt-1">Department Name is required.</p>
+            }
+          </nz-form-item>
+
+          <nz-form-item>
+            <p class="infinity-lable">Description</p>
+            <nz-form-control>
+              <nz-textarea-count [nzMaxCharacterCount]="1000">
+                <textarea formControlName="description" nz-input rows="4" placeholder="write any thing"></textarea>
+              </nz-textarea-count>
+            </nz-form-control>
+          </nz-form-item>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-row justify-end my-5">
+      <button class="w-fit rounded-md" type="submit" nz-button nzType="primary" (click)="saveDepart()" [disabled]="departForm.invalid">
+
+        @if (depId) {
+          Update Department
+        } @else {
+          Save New Department
+        }
+      </button>
+    </div>
+  </form>
+  }
+
+</div>
+

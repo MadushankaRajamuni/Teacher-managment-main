@@ -1,0 +1,149 @@
+<app-breadcrumb [crumbs]="breadcrumbs"/>
+<div class="inner-content">
+  <p class="infinity-title">
+    @if (empId) {
+      Update Teacher
+    } @else {
+      Add New Teacher
+    }
+  </p>
+
+  @if (loading) {
+    <div class="h-[400px]">
+      <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
+    </div>
+  } @else {
+
+    <form nz-form [formGroup]="empForm" [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
+      <!-- Form content -->
+      <div class="infinity-section">
+        <div class="col-span-10">
+          <div class="flex flex-col">
+            <nz-form-item>
+              <p class="infinity-lable">First Name <span>*</span></p>
+              <nz-form-control>
+                <nz-input-group nzSize="large">
+                  <input formControlName="firstname" type="text" nz-input placeholder="Enter First Name"/>
+                </nz-input-group>
+              </nz-form-control>
+              @if (formErrors?.firstname?.required) {
+                <p class="text-red-400 text-sm mt-1">First Name is required.</p>
+              }
+            </nz-form-item>
+
+            <nz-form-item>
+              <p class="infinity-lable">Last Name <span>*</span></p>
+              <nz-form-control>
+                <nz-input-group nzSize="large">
+                  <input formControlName="lastname" type="text" nz-input placeholder="Enter Last Name"/>
+                </nz-input-group>
+              </nz-form-control>
+              @if (formErrors?.lastname?.required) {
+                <p class="text-red-400 text-sm mt-1">Last Name is required.</p>
+              }
+            </nz-form-item>
+
+            <nz-form-item>
+              <p class="infinity-lable">Job Title <span>*</span></p>
+              <nz-form-control>
+                <nz-input-group nzSize="large">
+                  <input formControlName="jobTitle" type="text" nz-input placeholder="Enter Title"/>
+                </nz-input-group>
+              </nz-form-control>
+              @if (formErrors?.jobTitle?.required) {
+                <p class="text-red-400 text-sm mt-1">Title is required.</p>
+              }
+            </nz-form-item>
+
+            <nz-form-item>
+              <p class="infinity-lable">NIC <span>*</span></p>
+              <nz-form-control>
+                <nz-input-group nzSize="large">
+                  <input formControlName="nic" nz-input type="text" placeholder="Enter NIC"/>
+                </nz-input-group>
+              </nz-form-control>
+              @if (formErrors?.nic?.required) {
+                <p class="text-red-400 text-sm mt-1">NIC is required.</p>
+              }
+            </nz-form-item>
+
+            <nz-form-item>
+              <p class="infinity-lable">Email Address <span>*</span></p>
+              <nz-form-control>
+                <nz-input-group nzSize="large">
+                  <input nz-input formControlName="email" type="email" placeholder="Enter Email Address"/>
+                </nz-input-group>
+              </nz-form-control>
+              @if (formErrors?.email.email) {
+                <p class="text-red-400 text-sm mt-1">Email pattern is not completed.</p>
+              } @else if (formErrors?.email.required) {
+                <p class="text-red-400 text-sm mt-1">Email is required.</p>
+              }
+            </nz-form-item>
+
+            <nz-form-item>
+              <p class="infinity-lable">Mobile Number</p>
+              <nz-form-control>
+                <nz-input-group nzSize="large" class="flex gap-3">
+                  <input nz-input formControlName="mobile" type="text" placeholder="Enter Mobile Number" maxlength="15"/>
+                </nz-input-group>
+              </nz-form-control>
+              @if (formErrors?.mobile.maxLength) {
+                <p class="text-red-400 text-sm mt-1">Number length is 10.</p>
+              } @else if (formErrors?.mobile.required) {
+                <p class="text-red-400 text-sm mt-1">Mobile is required.</p>
+              } @else if (formErrors?.mobile.pattern) {
+                <p class="text-red-400 text-sm mt-1">Numbers only.</p>
+              }
+            </nz-form-item>
+
+            <nz-form-item>
+              <p class="infinity-lable">Department <span>*</span></p>
+              <nz-form-control>
+                <nz-select formControlName="department">
+                  @for (c of departments; track c._id) {
+                    <nz-option [nzLabel]="c.depName" [nzValue]="c._id"></nz-option>
+                  }
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+
+            <nz-form-item class="my-10">
+              <p class="infinity-lable">Profile Picture</p>
+              <nz-upload
+                class="avatar-uploader"
+                nzAction="{{SETTINGS.BASE_API}}/files/upload"
+                nzName="avatar"
+                nzListType="picture-card"
+                [nzShowUploadList]="false"
+                (nzChange)="handleChange($event)"
+              >
+                @if (!imageUrl) {
+                  <span class="upload-icon" nz-icon [nzType]="uploading ? 'loading' : 'plus'"></span>
+                  <div class="ant-upload-text">Upload</div>
+                } @else {
+                  <img [src]="imageUrl" alt="" class="object-contain" style="width: 100%" />
+                }
+              </nz-upload>
+            </nz-form-item>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-row justify-end my-5">
+        <button class="w-fit rounded-md" type="submit" nz-button nzType="primary" (click)="saveEmployee()" [disabled]="empForm.invalid">
+
+          @if (empId) {
+            Update Teacher
+          } @else {
+            Save New Teacher
+          }
+        </button>
+      </div>
+    </form>
+  }
+
+</div>
+
