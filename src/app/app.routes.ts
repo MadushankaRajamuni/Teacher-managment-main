@@ -8,6 +8,7 @@ import {DepartmentComponent} from './components/department/department.component'
 import {AddEditDepartmentComponent} from './components/department/add-edit-department/add-edit-department.component';
 import {LogsComponent} from './components/logs/logs.component';
 
+
 export const routes: Routes = [
   {
     path: 'auth',
@@ -55,6 +56,11 @@ export const routes: Routes = [
         path: 'employees',
         loadChildren: () =>
           import('./modules/employee/employee.module').then((m) => m.EmployeeModule),
+      },
+      {
+        path: 'leave',
+        loadChildren: () =>
+          import('./modules/leave/leave.module').then((m) => m.LeaveModule),
       },
       {
         path: 'logs',

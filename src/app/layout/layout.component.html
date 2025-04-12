@@ -28,6 +28,14 @@
                 [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE_ADD'), true)">Add Teacher</li>
           </ul>
         </li>
+        <li nz-submenu nzTitle="Leave" nzIcon="schedule">
+          <ul>
+            <li nz-menu-item (click)="routeLink('LEAVE')"
+                [nzSelected]="router.isActive(routeLinkActive('LEAVE'), true)">View Leave</li>
+            <li nz-menu-item (click)="routeLink('LEAVE_ADD')"
+                [nzSelected]="router.isActive(routeLinkActive('LEAVE_ADD'), true)">Add Leave</li>
+          </ul>
+        </li>
         <li nz-submenu nzTitle="Department" nzIcon="branches">
           <ul>
             <li nz-menu-item (click)="routeLink('DEPART')"

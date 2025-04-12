@@ -1,0 +1,157 @@
+<app-breadcrumb [crumbs]="breadcrumbs" />
+<div class="inner-content">
+  <p class="infinity-title">
+    {{ isEditLeave ? 'Update Leave Application' : 'Create Leave Application' }}
+  </p>
+
+  <div *ngIf="loading" class="h-[400px]">
+    <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
+  </div>
+
+  <form [formGroup]="leaveForm" nz-form [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
+    <!-- Name -->
+    <div class="grid grid-cols-1 gap-4">
+      <nz-form-item>
+        <p class="infinity-lable">Teacher Name <span>*</span></p>
+        <nz-form-control>
+          <nz-input-group nzSize="large">
+            <input
+              formControlName="teacherName"
+              type="text"
+              nz-input
+              placeholder="Enter Your Name"
+              class="w-full pl-4"
+            />
+          </nz-input-group>
+        </nz-form-control>
+        <p *ngIf="formErrors?.teacherName?.required" class="text-red-400 text-sm mt-1">
+          Teacher Name is required.
+        </p>
+      </nz-form-item>
+
+      <!-- Designation -->
+      <nz-form-item>
+        <p class="infinity-lable">Designation <span>*</span></p>
+        <nz-form-control>
+          <nz-input-group nzSize="large">
+            <input
+              formControlName="designation"
+              type="text"
+              nz-input
+              placeholder="Enter your designation"
+              class="w-full pl-4"
+            />
+          </nz-input-group>
+        </nz-form-control>
+        <p *ngIf="formErrors?.designation?.required" class="text-red-400 text-sm mt-1">
+          Designation is required.
+        </p>
+      </nz-form-item>
+    </div>
+
+    <!-- Leave Category & Type -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <nz-form-item>
+        <p class="infinity-lable">Leave Category <span>*</span></p>
+        <nz-form-control>
+          <nz-select formControlName="category" class="w-full" nzPlaceHolder="Select Category">
+            <nz-option *ngFor="let option of leaveCategories" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          </nz-select>
+        </nz-form-control>
+        <p *ngIf="formErrors?.category?.required" class="text-red-400 text-sm mt-1">
+          Leave category is required.
+        </p>
+      </nz-form-item>
+
+      <nz-form-item>
+        <p class="infinity-lable">Leave Type <span>*</span></p>
+        <nz-form-control>
+          <nz-select formControlName="type" class="w-full" nzPlaceHolder="Select Type">
+            <nz-option *ngFor="let option of leaveTypes" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          </nz-select>
+        </nz-form-control>
+        <p *ngIf="formErrors?.type?.required" class="text-red-400 text-sm mt-1">
+          Leave type is required.
+        </p>
+      </nz-form-item>
+    </div>
+
+    <!-- From and To Date -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <nz-form-item>
+        <p class="infinity-lable">From Date <span>*</span></p>
+        <nz-form-control>
+          <nz-date-picker formControlName="fromDate" class="w-full" nzFormat="dd/MM/yyyy"></nz-date-picker>
+        </nz-form-control>
+        <p *ngIf="formErrors?.fromDate?.required" class="text-red-400 text-sm mt-1">
+          From Date is required.
+        </p>
+      </nz-form-item>
+
+      <nz-form-item>
+        <p class="infinity-lable">To Date <span>*</span></p>
+        <nz-form-control>
+          <nz-date-picker formControlName="toDate" class="w-full" nzFormat="dd/MM/yyyy"></nz-date-picker>
+        </nz-form-control>
+        <p *ngIf="formErrors?.toDate?.required" class="text-red-400 text-sm mt-1">
+          To Date is required.
+        </p>
+      </nz-form-item>
+      <nz-form-item>
+        <p class="infinity-lable">Leave Days</p>
+        <nz-form-control>
+          <input
+            nz-input
+            class="w-full"
+            formControlName="leaveDays"
+            readonly
+            style="background-color: #f5f5f5; cursor: not-allowed;" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Leave Reason -->
+      <nz-form-item>
+        <p class="infinity-lable">Leave Reason <span>*</span></p>
+        <nz-form-control>
+          <textarea
+            formControlName="reason"
+            nz-input
+            placeholder="Enter the reason for leave"
+            class="w-full pl-4"
+          ></textarea>
+        </nz-form-control>
+        <p *ngIf="formErrors?.reason?.required" class="text-red-400 text-sm mt-1">
+          Leave reason is required.
+        </p>
+      </nz-form-item>
+
+      <!-- Relief Assignee -->
+      <nz-form-item>
+        <p class="infinity-lable">Relief Assignee <span>*</span></p>
+        <nz-form-control>
+          <nz-select formControlName="reliefAssignee" class="w-full " nzPlaceHolder="Select Relief Assignee">
+            <nz-option *ngFor="let assignee of assigneeList" [nzValue]="assignee.id" [nzLabel]="assignee.name"></nz-option>
+          </nz-select>
+        </nz-form-control>
+        <p *ngIf="formErrors?.reliefAssignee?.required" class="text-red-400 text-sm mt-1">
+          Relief assignee is required.
+        </p>
+      </nz-form-item>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex flex-row justify-end my-5">
+      <button
+  class="w-fit rounded-md"
+  type="submit"
+  nz-button
+  nzType="primary"
+  (click)="submitLeaveApplication()"
+  [disabled]="leaveForm.invalid || loading"
+>
+  {{ isEditLeave ? 'Update Leave Application' : 'Submit Leave Application' }}
+</button>
+    </div>
+
+  </form>
+</div>
