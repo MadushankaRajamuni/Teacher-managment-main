@@ -1,57 +1,77 @@
-<header class="bg-blue-600 text-white p-6">
-  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
-    <h1 class="text-3xl font-bold">Teacher Management System</h1>
-    <button class="mt-4 md:mt-0 bg-gray-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-gray-600 transition">Apply Leave</button>
+<!-- Header -->
+<header class="bg-blue-700 text-white p-6">
+  <div class="flex justify-between items-center container mx-auto">
+    <h1 class="text-3xl font-bold">Teacher Dashboard</h1>
+    <button class="bg-white !text-black px-4 py-2 rounded hover:bg-gray-200 transition">
+      + Apply Leave
+    </button>
   </div>
-  <p class="text-lg mt-4 text-center">Manage your schedule, apply leaves, and track performance — all in one place.</p>
 </header>
 
-<!-- Promotion Section -->
-<section class="container mx-auto py-12 px-4">
-  <div class="grid md:grid-cols-2 gap-8 items-center">
-    <img src="https://via.placeholder.com/500x300" alt="App Preview" class="rounded-lg shadow-lg">
-    <div>
-      <h2 class="text-2xl font-bold mb-4">Why Choose Our App?</h2>
-      <ul class="space-y-3">
-        <li>✅ Easy Leave Application Process</li>
-        <li>✅ Schedule and Classroom Management</li>
-        <li>✅ Performance Analytics</li>
-        <li>✅ User-Friendly Mobile App</li>
-      </ul>
+<!-- Summary Cards -->
+<section class="container mx-auto mt-6 px-4">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="text-sm text-gray-500">Departments</h3>
+      <p class="text-2xl font-bold text-blue-700">{{ departmentCount }}</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="text-sm text-gray-500">Teachers</h3>
+      <p class="text-2xl font-bold text-green-600">{{ employeeCount }}</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="text-sm text-gray-500">Users</h3>
+      <p class="text-2xl font-bold text-purple-600">{{ userCount }}</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="text-sm text-gray-500">Leaves Today</h3>
+      <p class="text-2xl font-bold text-yellow-500">{{ leavesToday }}</p>
     </div>
   </div>
 </section>
 
-<!-- Terms & Conditions -->
-<section class="bg-white py-10 px-4">
-  <div class="container mx-auto">
-    <h2 class="text-xl font-semibold mb-4">Terms & Conditions (Short)</h2>
-    <p class="text-gray-700 leading-relaxed">
-      By using this system, teachers agree to use the platform responsibly. Leave requests are subject to approval and must be submitted at least 48 hours in advance. Any misuse of the system may result in disciplinary actions.
-    </p>
+<!-- Summary Bar Chart -->
+<section class="container mx-auto mt-10 px-4">
+  <div class="bg-white rounded shadow p-4">
+    <h2 class="text-lg font-semibold mb-4">System Overview</h2>
+    <div class="relative w-full h-[300px]">
+      <canvas
+        baseChart
+        #summaryChart
+        [data]="summaryBarChartData"
+        [type]="'bar'"
+        [options]="summaryBarChartOptions">
+      </canvas>
+    </div>
   </div>
 </section>
 
-<!-- How to Apply Leave -->
-<section class="bg-gray-100 py-10 px-4">
-  <div class="container mx-auto">
-    <h2 class="text-xl font-semibold mb-4">How to Apply for Leave</h2>
-    <ol class="list-decimal list-inside text-gray-700 space-y-2">
-      <li>Log in to your teacher dashboard.</li>
-      <li>Go to the "Leave" section.</li>
-      <li>Select your leave type and dates.</li>
-      <li>Add a reason (optional).</li>
-      <li>Click "Submit" and wait for admin approval.</li>
-    </ol>
+<!-- Monthly Leave Chart -->
+<section class="container mx-auto mt-10 px-4">
+  <div class="bg-white rounded shadow p-4">
+    <h2 class="text-lg font-semibold mb-4">Monthly Leave Statistics</h2>
+    <div class="relative w-full h-[300px]">
+      <canvas
+        baseChart
+        #monthlyChart
+        [data]="monthlyBarChartData"
+        [type]="'bar'"
+        [options]="monthlyBarChartOptions">
+      </canvas>
+    </div>
   </div>
 </section>
 
-<!-- Gallery / App Screenshots -->
-<section class="container mx-auto py-12 px-4">
-  <h2 class="text-2xl font-bold mb-6 text-center">Gallery</h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-    <img src="https://via.placeholder.com/300x200" alt="Screenshot 1" class="rounded shadow">
-    <img src="https://via.placeholder.com/300x200" alt="Screenshot 2" class="rounded shadow">
-    <img src="https://via.placeholder.com/300x200" alt="Screenshot 3" class="rounded shadow">
+<!-- Logs -->
+<section class="container mx-auto mt-10 px-4">
+  <h2 class="text-xl font-semibold mb-4">Recent Activity</h2>
+  <div class="bg-white rounded shadow p-4">
+    <ul class="divide-y divide-gray-200">
+      <li *ngFor="let log of recentLogs" class="py-2 text-sm text-gray-700">
+        {{ log }}
+      </li>
+    </ul>
   </div>
 </section>
+
+
