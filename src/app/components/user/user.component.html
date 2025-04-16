@@ -1,7 +1,131 @@
 <app-breadcrumb [crumbs]="breadcrumbs"/>
 <div class="inner-content">
-  <div class="flex justify-center items-center bg-amber-200 rounded-2xl p-4">
-    <h1 id="warn-text" class="text-5xl font-bold text-center">This page is not full completed. Please visit to other
-      pages</h1>
+  <div class="sm:flex justify-between gap-3 mb-5">
+    <p class="infinity-title">Teachers</p>
+    <button nz-button nzType="primary" routerLink="/admin/employees/add-edit">Add New Teacher</button>
   </div>
+
+  <div class="flex flex-row justify-between gap-3 items-center">
+    <div class="flex flex-col md:flex-row justify-between gap-3">
+      <nz-input-group nzPrefixIcon="search" class="max-w-[300px]">
+        <input nz-input [(ngModel)]="searchTerm" placeholder="Search"/>
+      </nz-input-group>
+
+      <nz-select [(ngModel)]="status" [nzPlaceHolder]="'Select Status'">
+        <nz-option [nzValue]="true" nzLabel="Active"></nz-option>
+        <nz-option [nzValue]="false" nzLabel="Inactive"></nz-option>
+      </nz-select>
+
+      <nz-select [(ngModel)]="depart" [nzLoading]="depLoading" [disabled]="depLoading" [nzPlaceHolder]="'Select Department'">
+        @for (c of departments; track c._id) {
+          <nz-option [nzLabel]="c.depName" [nzValue]="c._id"></nz-option>
+        }
+      </nz-select>
+      <button nz-button nzType="primary" (click)="onSearch()">Search</button>
+      <button nz-button nzType="dashed" (click)="onReset()">Reset
+        Filters
+      </button>
+    </div>
+
+  </div>
+
+  @if (loading) {
+    <div class="h-[400px]">
+      <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
+    </div>
+  } @else {
+    <div>
+      @if (tableData && tableData.length > 0) {
+        <nz-table #empTable class="mt-8" [nzData]="tableData" nzSize="middle" [nzOuterBordered]="true"
+                  [nzScroll]="{ x: '2000px' }" nzTableLayout="fixed" [nzFrontPagination]="false" >
+          <thead>
+          <tr class="text-center">
+            <th nzWidth="100px" class="infinity-thead text-start">ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>NIC</th>
+            <th>Mobile</th>
+            <th>Status</th>
+            <th>
+              <div class="flex justify-center w-full items-center pr-2">
+                <span>Created Date</span>
+                @if (sortOrder === -1) {
+                  <span class="cursor-pointer" (click)="sort()"><span nz-icon nzType="caret-up"
+                                                                      nzTheme="outline"></span></span>
+                } @else {
+                  <span class="cursor-pointer" (click)="sort()"><span nz-icon nzType="caret-down"
+                                                                      nzTheme="outline"></span></span>
+                }
+              </div>
+            </th>
+            <th nzWidth="200px">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+
+            @for (item of tableData; track item._id) {
+              <tr class="text-center">
+                <td class="clickable-field text-start">{{ item.refNo }}</td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <img
+                      nz-image
+                      class="rounded-full bg-gray-200"
+                      width="30px"
+                      height="30px"
+                      nzDisablePreview
+                      [nzFallback]="fallback"
+                      [nzSrc]="item?.imageUrl"
+                      alt=""
+                    />
+                    <p class="emp-name text-nowrap">{{ (item.firstname + ' ' + item.lastname) | truncateText }}</p>
+                  </div>
+                </td>
+          
+                <td class="text-nowrap"><a [href]="'mailto:' + item.email">{{ item.email }}</a></td>
+                <td>{{ item.nic }}</td>
+                <td><a [href]="'tel:' + (item.mobile || '')">{{ item.mobile ? item.mobile : '-' }}</a></td>
+                <td>
+                  <nz-switch [(ngModel)]="item.active" [nzCheckedChildren]="checkedTemplate"
+                             [nzUnCheckedChildren]="checkedTemplate"
+                             (ngModelChange)="onSwitchChange($event, item)"></nz-switch>
+                  <ng-template #checkedTemplate>
+                    @if (item.active) {
+                      <span nzColor="success">Active</span>
+                    } @else {
+                      <span nzColor="error">Inactive</span>
+                    }
+                  </ng-template>
+                </td>
+                <td>{{ item.createdAt | date: 'mediumDate' }}</td>
+                <td class="flex justify-start items-center gap-2">
+                  <button nz-button nzType="dashed" routerLink="/admin/employees/add-edit/{{item._id}}">
+                    Edit
+                  </button>
+                  <button nz-button nzDanger nzType="primary" (click)="showDeleteConfirm(item)">Delete</button>
+                </td>
+              </tr>
+            }
+
+          </tbody>
+
+        </nz-table>
+      } @else if (tableData.length === 0) {
+        <div class="text-center my-5">
+          <div class="py-36 bg-[#FFF7F7] rounded-md border-[0.5px] border-[#BD1A43]">
+            <p class="text-[#BD1A43]">No Results Available</p>
+          </div>
+        </div>
+      }
+
+
+    </div>
+  }
+  <div class="flex flex-row justify-end items-center">
+    <nz-pagination class="mt-4 flex items-end justify-end" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize"
+                   [nzTotal]="totalRecords" (nzPageIndexChange)="onPageChange($event)">
+    </nz-pagination>
+  </div>
+
+
 </div>

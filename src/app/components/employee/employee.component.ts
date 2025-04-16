@@ -54,7 +54,7 @@ export class EmployeeComponent implements OnInit {
       path: "/admin/dashboard"
     },
     {
-      name: "Employee",
+      name: "Users",
       path: "/admin/employees"
     }
   ];

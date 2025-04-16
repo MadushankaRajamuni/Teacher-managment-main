@@ -1,7 +1,57 @@
-<app-breadcrumb [crumbs]="breadcrumbs"/>
-<div class="inner-content">
-  <div class="flex justify-center items-center bg-amber-200 rounded-2xl p-4">
-    <h1 id="warn-text" class="text-5xl font-bold text-center">This page is not full completed. Please visit to other
-      pages</h1>
+<header class="bg-blue-600 text-white p-6">
+  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+    <h1 class="text-3xl font-bold">Teacher Management System</h1>
+    <button class="mt-4 md:mt-0 bg-gray-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-gray-600 transition">Apply Leave</button>
   </div>
-</div>
+  <p class="text-lg mt-4 text-center">Manage your schedule, apply leaves, and track performance — all in one place.</p>
+</header>
+
+<!-- Promotion Section -->
+<section class="container mx-auto py-12 px-4">
+  <div class="grid md:grid-cols-2 gap-8 items-center">
+    <img src="https://via.placeholder.com/500x300" alt="App Preview" class="rounded-lg shadow-lg">
+    <div>
+      <h2 class="text-2xl font-bold mb-4">Why Choose Our App?</h2>
+      <ul class="space-y-3">
+        <li>✅ Easy Leave Application Process</li>
+        <li>✅ Schedule and Classroom Management</li>
+        <li>✅ Performance Analytics</li>
+        <li>✅ User-Friendly Mobile App</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Terms & Conditions -->
+<section class="bg-white py-10 px-4">
+  <div class="container mx-auto">
+    <h2 class="text-xl font-semibold mb-4">Terms & Conditions (Short)</h2>
+    <p class="text-gray-700 leading-relaxed">
+      By using this system, teachers agree to use the platform responsibly. Leave requests are subject to approval and must be submitted at least 48 hours in advance. Any misuse of the system may result in disciplinary actions.
+    </p>
+  </div>
+</section>
+
+<!-- How to Apply Leave -->
+<section class="bg-gray-100 py-10 px-4">
+  <div class="container mx-auto">
+    <h2 class="text-xl font-semibold mb-4">How to Apply for Leave</h2>
+    <ol class="list-decimal list-inside text-gray-700 space-y-2">
+      <li>Log in to your teacher dashboard.</li>
+      <li>Go to the "Leave" section.</li>
+      <li>Select your leave type and dates.</li>
+      <li>Add a reason (optional).</li>
+      <li>Click "Submit" and wait for admin approval.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- Gallery / App Screenshots -->
+<section class="container mx-auto py-12 px-4">
+  <h2 class="text-2xl font-bold mb-6 text-center">Gallery</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <img src="https://via.placeholder.com/300x200" alt="Screenshot 1" class="rounded shadow">
+    <img src="https://via.placeholder.com/300x200" alt="Screenshot 2" class="rounded shadow">
+    <img src="https://via.placeholder.com/300x200" alt="Screenshot 3" class="rounded shadow">
+  </div>
+</section>

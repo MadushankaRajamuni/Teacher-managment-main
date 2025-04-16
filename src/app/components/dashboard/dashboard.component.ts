@@ -21,4 +21,5 @@ export class DashboardComponent {
       path: "/admin/dashboard"
     }
   ];
+  
 }

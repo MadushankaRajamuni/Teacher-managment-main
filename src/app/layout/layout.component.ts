@@ -32,11 +32,11 @@ export class LayoutComponent implements OnInit{
       path: "/admin/dashboard"
     },
     {
-      name: "USERS",
+      name: "TEACHERS",
       path: "/admin/users"
     },
     {
-      name: "USER_ADD",
+      name: "TEACHERS_ADD",
       path: "/admin/users/add-edit"
     },
     {

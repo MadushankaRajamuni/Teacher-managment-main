@@ -2,9 +2,9 @@
 <div class="inner-content">
   <p class="infinity-title">
     @if (empId) {
-      Update Teacher
+      Update User
     } @else {
-      Add New Teacher
+      Add New User
     }
   </p>
 
@@ -136,9 +136,9 @@
         <button class="w-fit rounded-md" type="submit" nz-button nzType="primary" (click)="saveEmployee()" [disabled]="empForm.invalid">
 
           @if (empId) {
-            Update Teacher
+            Update User
           } @else {
-            Save New Teacher
+            Save New User
           }
         </button>
       </div>
