@@ -99,28 +99,32 @@ export class DashboardComponent implements OnInit {
   
       this.cdr.detectChanges();
   
-      // ⏳ Wait a bit before trying to update
-      setTimeout(() => {
-        console.log('Chart instance:', this.summaryChart);
-        if (this.summaryChart && typeof this.summaryChart.update === 'function') {
-          console.log('✅ Updating summaryChart');
+      // Wait until chart instance is ready
+      const interval = setInterval(() => {
+        if (this.summaryChart?.chart) {
           this.summaryChart.update();
-        } else {
-          console.warn('⚠️ summaryChart is not ready or update is not a function');
+          clearInterval(interval);
         }
-      }, 150); // slightly longer delay to ensure it's assigned
+      }, 100);
     });
   }
-  
   
   loadMonthlyLeaves() {
     this.dashboardService.getMonthlyLeaveStats().subscribe((data) => {
       this.monthlyBarChartData.labels = data.map((d: any) => d.month);
       this.monthlyBarChartData.datasets[0].data = data.map((d: any) => d.leaves);
   
-      this.cdr.detectChanges(); // optional
+      this.cdr.detectChanges();
+  
+      const interval = setInterval(() => {
+        if (this.monthlyChart?.chart) {
+          this.monthlyChart.update();
+          clearInterval(interval);
+        }
+      }, 100);
     });
   }
+  
   
 
   loadLogs() {

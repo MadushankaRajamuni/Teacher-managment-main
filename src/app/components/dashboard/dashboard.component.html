@@ -1,8 +1,8 @@
 <!-- Header -->
 <header class="bg-blue-700 text-white p-6">
-  <div class="flex justify-between items-center container mx-auto">
-    <h1 class="text-3xl font-bold">Teacher Dashboard</h1>
-    <button class="bg-white !text-black px-4 py-2 rounded hover:bg-gray-200 transition">
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 container mx-auto px-4">
+    <h1 class="text-2xl sm:text-3xl font-bold">Admin Dashboard</h1>
+    <button class="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition">
       + Apply Leave
     </button>
   </div>
@@ -10,31 +10,60 @@
 
 <!-- Summary Cards -->
 <section class="container mx-auto mt-6 px-4">
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-    <div class="bg-white p-4 rounded shadow">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    
+    <!-- Departments -->
+    <div class="bg-white p-4 rounded shadow flex flex-col items-center space-y-2">
+      <svg class="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 10h2l1 2h10l1-2h2M12 14v5m-4-5v5m8-5v5m-9-5H4a2 2 0 01-2-2V6a2 2 0 012-2h16a2 2 0 012 2v6a2 2 0 01-2 2h-3"></path>
+      </svg>
       <h3 class="text-sm text-gray-500">Departments</h3>
       <p class="text-2xl font-bold text-blue-700">{{ departmentCount }}</p>
     </div>
-    <div class="bg-white p-4 rounded shadow">
+
+    <!-- Teachers -->
+    <div class="bg-white p-4 rounded shadow flex flex-col items-center space-y-2">
+      <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M5.121 17.804A8.001 8.001 0 0112 2a8.001 8.001 0 016.879 15.804M15 12H9"></path>
+      </svg>
       <h3 class="text-sm text-gray-500">Teachers</h3>
       <p class="text-2xl font-bold text-green-600">{{ employeeCount }}</p>
     </div>
-    <div class="bg-white p-4 rounded shadow">
+
+    <!-- Users -->
+    <div class="bg-white p-4 rounded shadow flex flex-col items-center space-y-2">
+      <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m13-1.13a4 4 0 10-7.16-2.44A4 4 0 106.16 13"></path>
+      </svg>
       <h3 class="text-sm text-gray-500">Users</h3>
       <p class="text-2xl font-bold text-purple-600">{{ userCount }}</p>
     </div>
-    <div class="bg-white p-4 rounded shadow">
+
+    <!-- Leaves Today -->
+    <div class="bg-white p-4 rounded shadow flex flex-col items-center space-y-2">
+      <svg class="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 7V3m8 4V3M3 11h18M5 19h14a2 2 0 002-2V7H3v10a2 2 0 002 2z"></path>
+      </svg>
       <h3 class="text-sm text-gray-500">Leaves Today</h3>
       <p class="text-2xl font-bold text-yellow-500">{{ leavesToday }}</p>
     </div>
+
   </div>
 </section>
 
 <!-- Summary Bar Chart -->
 <section class="container mx-auto mt-10 px-4">
   <div class="bg-white rounded shadow p-4">
-    <h2 class="text-lg font-semibold mb-4">System Overview</h2>
-    <div class="relative w-full h-[300px]">
+    <h2 class="text-base sm:text-lg font-semibold mb-4">System Overview</h2>
+    <div class="relative w-full overflow-x-auto h-[300px]">
       <canvas
         baseChart
         #summaryChart
@@ -49,8 +78,8 @@
 <!-- Monthly Leave Chart -->
 <section class="container mx-auto mt-10 px-4">
   <div class="bg-white rounded shadow p-4">
-    <h2 class="text-lg font-semibold mb-4">Monthly Leave Statistics</h2>
-    <div class="relative w-full h-[300px]">
+    <h2 class="text-base sm:text-lg font-semibold mb-4">Monthly Leave Statistics</h2>
+    <div class="relative w-full overflow-x-auto h-[300px]">
       <canvas
         baseChart
         #monthlyChart
@@ -63,9 +92,9 @@
 </section>
 
 <!-- Logs -->
-<section class="container mx-auto mt-10 px-4">
-  <h2 class="text-xl font-semibold mb-4">Recent Activity</h2>
-  <div class="bg-white rounded shadow p-4">
+<section class="container mx-auto mt-10 px-4 mb-10">
+  <h2 class="text-lg sm:text-xl font-semibold mb-4">Recent Activity</h2>
+  <div class="bg-white rounded shadow p-4 overflow-x-auto">
     <ul class="divide-y divide-gray-200">
       <li *ngFor="let log of recentLogs" class="py-2 text-sm text-gray-700">
         {{ log }}
@@ -73,5 +102,3 @@
     </ul>
   </div>
 </section>
-
-
