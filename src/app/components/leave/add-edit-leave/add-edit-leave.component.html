@@ -1,13 +1,22 @@
 <app-breadcrumb [crumbs]="breadcrumbs" />
-<div class="inner-content">
-  <p class="infinity-title">
-    {{ isEditLeave ? 'Update Leave Application' : 'Create Leave Application' }}
-  </p>
+<div class="inner-content flex flex-wrap">
+  <div class="w-full md:w-1/2 p-4">
+    <p class="infinity-title text-center">
+      {{ isEditLeave ? 'Update Leave Application' : 'Leave Application' }}
+    </p>
+  </div>
+  <div class="w-full md:w-1/2 p-4">
+    <p class="infinity-title text-center">
+      Leave Balance
+    </p>
+  </div>
+ 
 
   <div *ngIf="loading" class="h-[400px]">
     <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
   </div>
-
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+  <div class="w-full p-4 border-2 border-blue-500 rounded-lg" >
   <form [formGroup]="leaveForm" nz-form [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
     <!-- Name -->
     <div class="grid grid-cols-1 gap-4">
@@ -140,7 +149,7 @@
     </div>
 
     <!-- Submit Button -->
-    <div class="flex flex-row justify-end my-5">
+    <div class="flex flex-row justify-center my-5">
       <button
   class="w-fit rounded-md"
   type="submit"
@@ -154,4 +163,29 @@
     </div>
 
   </form>
+</div>
+
+<!-- right div -->
+<div class="w-full p-4 border-2 border-blue-500 rounded-lg"> 
+  <h2 class="text-lg font-semibold text-center">Leave Balance</h2> 
+  <ul class="mt-4 space-y-2"> 
+    <li class="flex justify-between"> 
+      <span class="font-medium">Casual Leave:</span>
+      <span>5 Days</span>
+    </li>
+    <li class="flex justify-between">
+      <span class="font-medium">Sick Leave:</span>
+      <span>3 Days</span>
+    </li>
+    <li class="flex justify-between"> 
+      <span class="font-medium">Duty Leave:</span>
+      <span>10 Days</span>
+    </li>
+   
+  </ul>
+</div>
+
+
+</div>
+
 </div>
