@@ -2,7 +2,7 @@
 <div class="inner-content">
   <div class="sm:flex justify-between gap-3 mb-5">
     <p class="infinity-title">Leave</p>
-    <button nz-button nzType="primary" routerLink="/admin/employees/add-edit">Add New Leave</button>
+    <button nz-button nzType="primary" routerLink="/admin/leave/add-edit">Add New Leave</button>
   </div>
 
   <div class="flex flex-row justify-between gap-3 items-center">
@@ -92,8 +92,8 @@
                 <td class="text-nowrap">{{item.status}}</td>
                 <td>{{ item.category }}</td>
                 <td>{{ item.type }}</td>
-                <td>{{ item.fromDate }}</td>
-                <td>{{ item.toDate }}</td>
+                <td>{{ item.fromDate | date: 'mediumDate' }}</td>
+                <td>{{ item.toDate | date: 'mediumDate' }}</td>
                 <td>{{item.leaveDays}}</td>
                 <td>{{ item.reason }}</td>
                 <td>{{ item.reliefAssignee}}</td>

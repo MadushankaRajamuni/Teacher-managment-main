@@ -80,6 +80,12 @@ export class AddEditLeaveComponent implements OnInit {
     { label: 'Earned Leave', value: 'EARNED' },
   ];
 
+  designations = [
+    { label: 'Grade I', value: 'GRADE_1' },
+    { label: 'Grade II', value: 'GRADE_2' },
+    { label: 'Grade III', value: 'GRADE_3' },
+  ];
+  
   leaveTypes = [
     { label: 'Full Day', value: 'FULL' },
     { label: 'Half Day - Morning', value: 'HALF_MORNING' },
@@ -135,20 +141,20 @@ export class AddEditLeaveComponent implements OnInit {
     }
   }
 
-  submitLeaveApplication(): void {
+  async submitLeaveApplication(): Promise<void> {
     if (this.leaveForm.valid) {
       this.loading = true;
       const payload = this.leaveForm.getRawValue();
-
+  
       try {
         if (this.isEditLeave && this.leaveId) {
-          this.leaveService.updateLeave({ id: this.leaveId, ...payload });
+          await this.leaveService.updateLeave({ id: this.leaveId, ...payload });
           this.notification.success('Success', 'Leave application updated successfully!');
         } else {
-          this.leaveService.createLeave(payload);
+          await this.leaveService.createLeave(payload);
           this.notification.success('Success', 'Leave application submitted successfully!');
         }
-        this.router.navigateByUrl('/admin/leaves');
+        await this.router.navigateByUrl('/admin/leave');
       } catch (error: any) {
         console.error('Error saving leave application:', error);
         this.notification.error('Error', error.message || 'An error occurred while processing the leave application.');
@@ -159,6 +165,7 @@ export class AddEditLeaveComponent implements OnInit {
       console.log('Form is invalid');
     }
   }
+  
 
   calculateLeaveDays() {
     const from = this.leaveForm.get('fromDate')?.value;

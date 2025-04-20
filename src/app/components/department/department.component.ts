@@ -48,8 +48,8 @@ export class DepartmentComponent implements OnInit {
       path: "/admin/dashboard"
     },
     {
-      name: "Department",
-      path: "/admin/departments"
+      name: "Sections",
+      path: "/admin/sections"
     }
   ];
   loading = false

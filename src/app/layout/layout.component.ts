@@ -41,11 +41,11 @@ export class LayoutComponent implements OnInit{
     },
     {
       name: "DEPART",
-      path: "/admin/departments"
+      path: "/admin/sections"
     },
     {
       name: "DEPART_ADD",
-      path: "/admin/departments/add-edit"
+      path: "/admin/section/add-edit"
     },
     {
       name: "EMPLOYEE",
@@ -57,7 +57,7 @@ export class LayoutComponent implements OnInit{
     },
     {
       name: "LEAVE",
-      path: "/admin/leave" 
+      path: "/admin/leave"
     },
     {
       name: "LEAVE_ADD",

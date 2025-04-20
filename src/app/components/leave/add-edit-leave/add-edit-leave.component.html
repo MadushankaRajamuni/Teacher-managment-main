@@ -1,13 +1,22 @@
 <app-breadcrumb [crumbs]="breadcrumbs" />
-<div class="inner-content">
-  <p class="infinity-title">
-    {{ isEditLeave ? 'Update Leave Application' : 'Create Leave Application' }}
-  </p>
+<div class="inner-content flex flex-wrap">
+  <div class="w-full md:w-1/2 p-4">
+    <p class="infinity-title text-center">
+      {{ isEditLeave ? 'Update Leave Application' : 'Leave Application' }}
+    </p>
+  </div>
+  <div class="w-full md:w-1/2 p-4">
+    <p class="infinity-title text-center">
+      Leave Balance
+    </p>
+  </div>
+ 
 
   <div *ngIf="loading" class="h-[400px]">
     <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
   </div>
-
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+  <div class="w-full p-4 border-2 border-blue-500 rounded-lg" >
   <form [formGroup]="leaveForm" nz-form [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
     <!-- Name -->
     <div class="grid grid-cols-1 gap-4">
@@ -28,25 +37,18 @@
           Teacher Name is required.
         </p>
       </nz-form-item>
-
-      <!-- Designation -->
       <nz-form-item>
         <p class="infinity-lable">Designation <span>*</span></p>
         <nz-form-control>
-          <nz-input-group nzSize="large">
-            <input
-              formControlName="designation"
-              type="text"
-              nz-input
-              placeholder="Enter your designation"
-              class="w-full pl-4"
-            />
-          </nz-input-group>
+          <nz-select formControlName="designation" class="w-full" nzPlaceHolder="Select Designation">
+            <nz-option *ngFor="let option of designations" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          </nz-select>
         </nz-form-control>
         <p *ngIf="formErrors?.designation?.required" class="text-red-400 text-sm mt-1">
           Designation is required.
         </p>
       </nz-form-item>
+      
     </div>
 
     <!-- Leave Category & Type -->
@@ -140,7 +142,7 @@
     </div>
 
     <!-- Submit Button -->
-    <div class="flex flex-row justify-end my-5">
+    <div class="flex flex-row justify-center my-5">
       <button
   class="w-fit rounded-md"
   type="submit"
@@ -154,4 +156,29 @@
     </div>
 
   </form>
+</div>
+
+<!-- right div -->
+<div class="w-full p-4 border-2 border-blue-500 rounded-lg"> 
+  <h2 class="text-lg font-semibold text-center">Leave Balance</h2> 
+  <ul class="mt-4 space-y-2"> 
+    <li class="flex justify-between"> 
+      <span class="font-medium">Casual Leave:</span>
+      <span>5 Days</span>
+    </li>
+    <li class="flex justify-between">
+      <span class="font-medium">Sick Leave:</span>
+      <span>3 Days</span>
+    </li>
+    <li class="flex justify-between"> 
+      <span class="font-medium">Duty Leave:</span>
+      <span>10 Days</span>
+    </li>
+   
+  </ul>
+</div>
+
+
+</div>
+
 </div>
