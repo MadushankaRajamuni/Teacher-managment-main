@@ -33,12 +33,12 @@
                 [nzSelected]="router.isActive(routeLinkActive('LEAVE_ADD'), true)">Add Leave</li>
           </ul>
         </li>
-        <li nz-submenu nzTitle="Department" nzIcon="branches">
+        <li nz-submenu nzTitle="Section" nzIcon="branches">
           <ul>
             <li nz-menu-item (click)="routeLink('DEPART')"
-                [nzSelected]="router.isActive(routeLinkActive('DEPART'), true)">View Departments</li>
+                [nzSelected]="router.isActive(routeLinkActive('DEPART'), true)">View Section</li>
             <li nz-menu-item (click)="routeLink('DEPART_ADD')"
-                [nzSelected]="router.isActive(routeLinkActive('DEPART_ADD'), true)">Add Department</li>
+                [nzSelected]="router.isActive(routeLinkActive('DEPART_ADD'), true)">Add Section</li>
           </ul>
         </li>
         <li nz-menu-item (click)="routeLink('LOGS')"

@@ -37,25 +37,18 @@
           Teacher Name is required.
         </p>
       </nz-form-item>
-
-      <!-- Designation -->
       <nz-form-item>
         <p class="infinity-lable">Designation <span>*</span></p>
         <nz-form-control>
-          <nz-input-group nzSize="large">
-            <input
-              formControlName="designation"
-              type="text"
-              nz-input
-              placeholder="Enter your designation"
-              class="w-full pl-4"
-            />
-          </nz-input-group>
+          <nz-select formControlName="designation" class="w-full" nzPlaceHolder="Select Designation">
+            <nz-option *ngFor="let option of designations" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          </nz-select>
         </nz-form-control>
         <p *ngIf="formErrors?.designation?.required" class="text-red-400 text-sm mt-1">
           Designation is required.
         </p>
       </nz-form-item>
+      
     </div>
 
     <!-- Leave Category & Type -->
