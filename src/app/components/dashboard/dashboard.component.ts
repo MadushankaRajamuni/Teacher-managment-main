@@ -1,11 +1,8 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { DashboardService } from '../../core/services/dashboard.service';
 import { ChartConfiguration } from 'chart.js';
-// import { NgChartsModule, BaseChartDirective } from 'ng2-charts';
 import { CommonModule } from '@angular/common';
-
 import { NgChartsModule, BaseChartDirective } from 'ng2-charts';
-
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +14,7 @@ import { NgChartsModule, BaseChartDirective } from 'ng2-charts';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
 
   departmentCount = 0;
   employeeCount = 0;
@@ -28,10 +25,14 @@ export class DashboardComponent implements OnInit {
   // Chart references
   @ViewChild('summaryChart', { static: false }) summaryChart?: BaseChartDirective;
   @ViewChild('monthlyChart', { static: false }) monthlyChart?: BaseChartDirective;
-  
-  
 
-  // Summary Bar Chart
+  // Flags to track data readiness
+  dataLoaded = {
+    summary: false,
+    monthly: false
+  };
+
+  // Summary Chart Config
   summaryBarChartData = {
     labels: ['Departments', 'Teachers', 'Users', 'Leaves Today'],
     datasets: [
@@ -47,7 +48,7 @@ export class DashboardComponent implements OnInit {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: false }
+      legend: { display: true }
     },
     scales: {
       x: { ticks: { color: '#4B5563' } },
@@ -55,7 +56,7 @@ export class DashboardComponent implements OnInit {
     }
   };
 
-  // Monthly Leaves Chart
+  // Monthly Chart Config
   monthlyBarChartData = {
     labels: [] as string[],
     datasets: [
@@ -69,7 +70,8 @@ export class DashboardComponent implements OnInit {
 
   monthlyBarChartOptions: ChartConfiguration<'bar'>['options'] = this.summaryBarChartOptions;
 
-  constructor(private dashboardService: DashboardService,  
+  constructor(
+    private dashboardService: DashboardService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -78,59 +80,60 @@ export class DashboardComponent implements OnInit {
     this.loadMonthlyLeaves();
     this.loadLogs();
   }
-  
-  // ngAfterViewInit(): void {
-    
-  // }
-  
-  loadSummary() {
-    this.dashboardService.getSummary().subscribe((res) => {
+
+  ngAfterViewInit(): void {
+    // Ensure chart updates after view is initialized and data is loaded
+    setTimeout(() => {
+      if (this.dataLoaded.summary && this.summaryChart?.chart) {
+        this.summaryChart.update();
+      }
+      if (this.dataLoaded.monthly && this.monthlyChart?.chart) {
+        this.monthlyChart.update();
+      }
+    }, 300); // small delay to ensure ViewChild is ready
+  }
+
+  async loadSummary() {
+    try {
+      const res = await this.dashboardService.getSummary();
       this.departmentCount = res.departments;
       this.employeeCount = res.employees;
       this.userCount = res.users;
       this.leavesToday = res.leavesToday;
-  
+
       this.summaryBarChartData.datasets[0].data = [
         this.departmentCount,
         this.employeeCount,
         this.userCount,
         this.leavesToday
       ];
-  
+
+      this.dataLoaded.summary = true;
       this.cdr.detectChanges();
-  
-      // Wait until chart instance is ready
-      const interval = setInterval(() => {
-        if (this.summaryChart?.chart) {
-          this.summaryChart.update();
-          clearInterval(interval);
-        }
-      }, 100);
-    });
+    } catch (error) {
+      console.error('Error loading summary:', error);
+    }
   }
-  
-  loadMonthlyLeaves() {
-    this.dashboardService.getMonthlyLeaveStats().subscribe((data) => {
+
+  async loadMonthlyLeaves() {
+    try {
+      const data = await this.dashboardService.getMonthlyLeaveStats();
       this.monthlyBarChartData.labels = data.map((d: any) => d.month);
       this.monthlyBarChartData.datasets[0].data = data.map((d: any) => d.leaves);
-  
-      this.cdr.detectChanges();
-  
-      const interval = setInterval(() => {
-        if (this.monthlyChart?.chart) {
-          this.monthlyChart.update();
-          clearInterval(interval);
-        }
-      }, 100);
-    });
-  }
-  
-  
 
-  loadLogs() {
-    this.dashboardService.getRecentLogs().subscribe((logs) => {
-      // console.log('Recent logs:', logs);
+      this.dataLoaded.monthly = true;
+      this.cdr.detectChanges();
+    } catch (error) {
+      console.error('Error loading monthly leave stats:', error);
+    }
+  }
+
+  async loadLogs() {
+    try {
+      const logs = await this.dashboardService.getRecentLogs();
       this.recentLogs = logs;
-    });
+    } catch (error) {
+      console.error('Error loading logs:', error);
+    }
   }
 }
