@@ -47,12 +47,26 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   summaryBarChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
     maintainAspectRatio: false,
+    animation: {
+      duration: 0
+    },
     plugins: {
-      legend: { display: true }
+      legend: { 
+        display: true,
+        position: 'top',
+        onClick: () => {} // Empty function to disable legend click behavior
+      }
     },
     scales: {
-      x: { ticks: { color: '#4B5563' } },
-      y: { ticks: { color: '#4B5563' } }
+      x: { 
+        ticks: { color: '#4B5563' },
+        grid: { display: false }
+      },
+      y: { 
+        ticks: { color: '#4B5563' },
+        grid: { display: false },
+        beginAtZero: true
+      }
     }
   };
 
@@ -68,7 +82,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     ]
   };
 
-  monthlyBarChartOptions: ChartConfiguration<'bar'>['options'] = this.summaryBarChartOptions;
+  monthlyBarChartOptions: ChartConfiguration<'bar'>['options'] = {
+    ...this.summaryBarChartOptions
+  };
 
   constructor(
     private dashboardService: DashboardService,
@@ -76,21 +92,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('DashboardComponent initialized');
     this.loadSummary();
     this.loadMonthlyLeaves();
     this.loadLogs();
   }
 
   ngAfterViewInit(): void {
-    // Ensure chart updates after view is initialized and data is loaded
+    this.cdr.detectChanges();
+    
+    // Initial chart updates
     setTimeout(() => {
-      if (this.dataLoaded.summary && this.summaryChart?.chart) {
-        this.summaryChart.update();
+      if (this.summaryChart?.chart) {
+        this.summaryChart.chart.update('none');
       }
-      if (this.dataLoaded.monthly && this.monthlyChart?.chart) {
-        this.monthlyChart.update();
+      if (this.monthlyChart?.chart) {
+        this.monthlyChart.chart.update('none');
       }
-    }, 300); // small delay to ensure ViewChild is ready
+    }, 0);
   }
 
   async loadSummary() {
@@ -101,15 +120,29 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.userCount = res.users;
       this.leavesToday = res.leavesToday;
 
-      this.summaryBarChartData.datasets[0].data = [
-        this.departmentCount,
-        this.employeeCount,
-        this.userCount,
-        this.leavesToday
-      ];
+      // Update chart data
+      this.summaryBarChartData = {
+        ...this.summaryBarChartData,
+        datasets: [{
+          ...this.summaryBarChartData.datasets[0],
+          data: [
+            this.departmentCount,
+            this.employeeCount,
+            this.userCount,
+            this.leavesToday
+          ]
+        }]
+      };
 
       this.dataLoaded.summary = true;
       this.cdr.detectChanges();
+      
+      // Update chart after data is loaded
+      setTimeout(() => {
+        if (this.summaryChart?.chart) {
+          this.summaryChart.chart.update('none');
+        }
+      }, 0);
     } catch (error) {
       console.error('Error loading summary:', error);
     }
@@ -118,11 +151,26 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   async loadMonthlyLeaves() {
     try {
       const data = await this.dashboardService.getMonthlyLeaveStats();
-      this.monthlyBarChartData.labels = data.map((d: any) => d.month);
-      this.monthlyBarChartData.datasets[0].data = data.map((d: any) => d.leaves);
+      
+      // Update chart data
+      this.monthlyBarChartData = {
+        ...this.monthlyBarChartData,
+        labels: data.map((d: any) => d.month),
+        datasets: [{
+          ...this.monthlyBarChartData.datasets[0],
+          data: data.map((d: any) => d.leaves)
+        }]
+      };
 
       this.dataLoaded.monthly = true;
       this.cdr.detectChanges();
+      
+      // Update chart after data is loaded
+      setTimeout(() => {
+        if (this.monthlyChart?.chart) {
+          this.monthlyChart.chart.update('none');
+        }
+      }, 0);
     } catch (error) {
       console.error('Error loading monthly leave stats:', error);
     }
