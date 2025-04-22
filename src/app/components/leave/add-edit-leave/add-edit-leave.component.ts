@@ -5,12 +5,10 @@ import { NzButtonComponent } from "ng-zorro-antd/button";
 import { NzOptionComponent, NzSelectComponent } from 'ng-zorro-antd/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { SETTINGS } from '../../../core/config/common.settings';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { LeaveService } from '../../../core/services/leave.service';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { CommonModule } from '@angular/common';
-import { NzInputGroupComponent } from 'ng-zorro-antd/input';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { AppUtils } from '../../../core/config/app.utils';
@@ -25,7 +23,6 @@ import { AppUtils } from '../../../core/config/app.utils';
     NzOptionComponent,
     NzSelectComponent,
     NzFormModule,
-    NzInputGroupComponent,
     NzDatePickerModule,
     NzSpinModule,
   ],
@@ -52,6 +49,9 @@ export class AddEditLeaveComponent implements OnInit {
   leaveTypeList: any = [];
   leaveAssigneeList: any = [];
 
+  teachers: any[] = [];
+ 
+
   constructor(
     private fb: NonNullableFormBuilder,
     private notification: NzNotificationService,
@@ -69,7 +69,6 @@ export class AddEditLeaveComponent implements OnInit {
       toDate: {},
       leaveDays: {},
       reason: {},
-      reliefAssignee: {}
     };
   }
 
@@ -92,13 +91,10 @@ export class AddEditLeaveComponent implements OnInit {
     { label: 'Half Day - Evening', value: 'HALF_EVENING' },
   ];
 
-  assigneeList = [
-    { id: '1', name: 'Alice Sharma' },
-    { id: '2', name: 'Bob Mehta' },
-    { id: '3', name: 'Carol Das' },
-  ];
 
   ngOnInit() {
+    this.loadTeachers();
+    
     this.initLeaveForm();
 
     this.leaveForm.get('fromDate')?.valueChanges.subscribe(() => this.calculateLeaveDays());
@@ -121,7 +117,6 @@ export class AddEditLeaveComponent implements OnInit {
       toDate: [null, Validators.required],
       leaveDays: [null, [Validators.required, Validators.min(1)]],
       reason: ['', Validators.required],
-      reliefAssignee: [null, Validators.required],
     });
 
     this.leaveForm.valueChanges.subscribe(() => {
@@ -140,7 +135,46 @@ export class AddEditLeaveComponent implements OnInit {
       this.loading = false;
     }
   }
-
+  
+  async loadTeachers(): Promise<void> {
+    this.loading = true;
+    try {
+  
+      const payload = {
+        filters: {
+          jobTitle: 'Teacher',  
+        },
+        pageIndex: 0,           
+        pageSize: 100,         
+        sortOrder: 1,          
+      };
+  
+     
+      console.log('Sending payload to get teachers:', payload);
+  
+      
+      const response = await this.employeeService.getPagedEmployee(payload);
+  
+      
+      this.teachers = response.map((teacher: any) => ({
+        label: `${teacher.firstname} ${teacher.lastname}`,
+        value: teacher._id,  
+      }));
+  
+     
+      console.log('Teachers loaded successfully:', this.teachers);
+    } catch (e: any) {
+      
+      console.error('Error loading teachers:', e);
+      if (e.response) {
+        console.error('Error details:', e.response);
+      }
+      this.notification.error('Error', 'An error occurred while loading teachers.');
+    } finally {
+      this.loading = false;
+    }
+  }
+  
   async submitLeaveApplication(): Promise<void> {
     if (this.leaveForm.valid) {
       this.loading = true;

@@ -41,11 +41,11 @@ export class LayoutComponent implements OnInit{
     },
     {
       name: "DEPART",
-      path: "/admin/sections"
+      path: "/admin/departments"
     },
     {
       name: "DEPART_ADD",
-      path: "/admin/section/add-edit"
+      path: "/admin/departments/add-edit"
     },
     {
       name: "EMPLOYEE",
