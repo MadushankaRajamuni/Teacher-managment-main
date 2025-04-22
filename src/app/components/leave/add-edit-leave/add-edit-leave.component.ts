@@ -232,7 +232,7 @@ export class AddEditLeaveComponent implements OnInit {
             ticks: {
               stepSize: 0.5, // Display points with half values (e.g., 0.5, 1.0, 1.5, etc.)
               callback: function(value) {
-                return value.toFixed(1); // Format the tick values to show one decimal place
+                return typeof value === 'number' ? value.toFixed(1) : value;
               }
             }
           }
@@ -255,8 +255,3 @@ export class AddEditLeaveComponent implements OnInit {
     ];
   }
 }
-```
-```html
-<div style="position: relative; height: 300px;">
-  <canvas id="leaveBalanceChart"></canvas>
-</div>
