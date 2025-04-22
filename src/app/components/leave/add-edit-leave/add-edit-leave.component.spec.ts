@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddEditLeaveComponent } from './add-edit-leave.component';
-
+import { Component, OnInit } from '@angular/core';
+import { Chart } from 'chart.js';
 describe('AddEditLeaveComponent', () => {
   let component: AddEditLeaveComponent;
   let fixture: ComponentFixture<AddEditLeaveComponent>;

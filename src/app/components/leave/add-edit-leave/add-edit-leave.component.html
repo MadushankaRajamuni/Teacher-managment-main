@@ -10,32 +10,34 @@
       Leave Balance
     </p>
   </div>
- 
 
   <div *ngIf="loading" class="h-[400px]">
     <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
   </div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-  <div class="w-full p-4 border-2 border-blue-500 rounded-lg" >
-  <form [formGroup]="leaveForm" nz-form [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
-    <!-- Name -->
-    <div class="grid grid-cols-1 gap-4">
-      <!-- <nz-form-item>
-        <p class="infinity-lable">Teacher Name <span>*</span></p>
-        <nz-form-control>
-          <nz-input-group nzSize="large">
-            <input
-              formControlName="teacherName"
-              type="text"
-              nz-input
-              placeholder="Enter Your Name"
-              class="w-full pl-4"
-            />
-          </nz-input-group>
-        </nz-form-control>
-        <p *ngIf="formErrors?.teacherName?.required" class="text-red-400 text-sm mt-1">
-          Teacher Name is required.
-        </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+    <!-- Left Div -->
+    <div class="w-full p-4 border-2 border-blue-500 rounded-lg flex flex-col">
+      <form [formGroup]="leaveForm" nz-form [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
+        <!-- Form Content -->
+        <div class="grid grid-cols-1 gap-4">
+          <!-- Name -->
+          <!-- <nz-form-item>
+            <p class="infinity-lable">Teacher Name <span>*</span></p>
+            <nz-form-control>
+              <nz-input-group nzSize="large">
+                <input
+                  formControlName="teacherName"
+                  type="text"
+                  nz-input
+                  placeholder="Enter Your Name"
+                  class="w-full pl-4"
+                />
+              </nz-input-group>
+            </nz-form-control>
+            <p *ngIf="formErrors?.teacherName?.required" class="text-red-400 text-sm mt-1">
+              Teacher Name is required.
+            </p>
       </nz-form-item> -->
       <nz-form-item>
         <p class="infinity-lable">Teacher Name <span>*</span></p>
@@ -53,140 +55,154 @@
         <p *ngIf="leaveForm.controls['teacherName'].hasError('required')" class="text-red-400 text-sm mt-1">
           Teacher Name is required.
         </p>
-      </nz-form-item>
+          </nz-form-item>
       
       
-      <nz-form-item>
-        <p class="infinity-lable">Designation <span>*</span></p>
-        <nz-form-control>
-          <nz-select formControlName="designation" class="w-full" nzPlaceHolder="Select Designation">
-            <nz-option *ngFor="let option of designations" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-          </nz-select>
-        </nz-form-control>
-        <p *ngIf="formErrors?.designation?.required" class="text-red-400 text-sm mt-1">
-          Designation is required.
-        </p>
-      </nz-form-item>
-      
-    </div>
+          <nz-form-item>
+            <p class="infinity-lable">Designation <span>*</span></p>
+            <nz-form-control>
+              <nz-select formControlName="designation" class="w-full" nzPlaceHolder="Select Designation">
+                <nz-option *ngFor="let option of designations" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+              </nz-select>
+            </nz-form-control>
+            <p *ngIf="formErrors?.designation?.required" class="text-red-400 text-sm mt-1">
+              Designation is required.
+            </p>
+          </nz-form-item>
+        </div>
 
-    <!-- Leave Category & Type -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <nz-form-item>
-        <p class="infinity-lable">Leave Category <span>*</span></p>
-        <nz-form-control>
-          <nz-select formControlName="category" class="w-full" nzPlaceHolder="Select Category">
-            <nz-option *ngFor="let option of leaveCategories" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-          </nz-select>
-        </nz-form-control>
-        <p *ngIf="formErrors?.category?.required" class="text-red-400 text-sm mt-1">
-          Leave category is required.
-        </p>
-      </nz-form-item>
+        <!-- Leave Category & Type -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <nz-form-item>
+            <p class="infinity-lable">Leave Category <span>*</span></p>
+            <nz-form-control>
+              <nz-select formControlName="category" class="w-full" nzPlaceHolder="Select Category">
+                <nz-option *ngFor="let option of leaveCategories" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+              </nz-select>
+            </nz-form-control>
+            <p *ngIf="formErrors?.category?.required" class="text-red-400 text-sm mt-1">
+              Leave category is required.
+            </p>
+          </nz-form-item>
 
-      <nz-form-item>
-        <p class="infinity-lable">Leave Type <span>*</span></p>
-        <nz-form-control>
-          <nz-select formControlName="type" class="w-full" nzPlaceHolder="Select Type">
-            <nz-option *ngFor="let option of leaveTypes" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-          </nz-select>
-        </nz-form-control>
-        <p *ngIf="formErrors?.type?.required" class="text-red-400 text-sm mt-1">
-          Leave type is required.
-        </p>
-      </nz-form-item>
-    </div>
+          <nz-form-item>
+            <p class="infinity-lable">Leave Type <span>*</span></p>
+            <nz-form-control>
+              <nz-select formControlName="type" class="w-full" nzPlaceHolder="Select Type">
+                <nz-option *ngFor="let option of leaveTypes" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+              </nz-select>
+            </nz-form-control>
+            <p *ngIf="formErrors?.type?.required" class="text-red-400 text-sm mt-1">
+              Leave type is required.
+            </p>
+          </nz-form-item>
+        </div>
 
-    <!-- From and To Date -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <nz-form-item>
-        <p class="infinity-lable">From Date <span>*</span></p>
-        <nz-form-control>
-          <nz-date-picker formControlName="fromDate" class="w-full" nzFormat="dd/MM/yyyy"></nz-date-picker>
-        </nz-form-control>
-        <p *ngIf="formErrors?.fromDate?.required" class="text-red-400 text-sm mt-1">
-          From Date is required.
-        </p>
-      </nz-form-item>
+        <!-- From and To Date -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <nz-form-item>
+            <p class="infinity-lable">From Date <span>*</span></p>
+            <nz-form-control>
+              <nz-date-picker formControlName="fromDate" class="w-full" nzFormat="dd/MM/yyyy"></nz-date-picker>
+            </nz-form-control>
+            <p *ngIf="formErrors?.fromDate?.required" class="text-red-400 text-sm mt-1">
+              From Date is required.
+            </p>
+          </nz-form-item>
 
-      <nz-form-item>
-        <p class="infinity-lable">To Date <span>*</span></p>
-        <nz-form-control>
-          <nz-date-picker formControlName="toDate" class="w-full" nzFormat="dd/MM/yyyy"></nz-date-picker>
-        </nz-form-control>
-        <p *ngIf="formErrors?.toDate?.required" class="text-red-400 text-sm mt-1">
-          To Date is required.
-        </p>
-      </nz-form-item>
-      <nz-form-item>
-        <p class="infinity-lable">Leave Days</p>
-        <nz-form-control>
-          <input
-            nz-input
-            class="w-full"
-            formControlName="leaveDays"
-            readonly
-            style="background-color: #f5f5f5; cursor: not-allowed;" />
-        </nz-form-control>
-      </nz-form-item>
+          <nz-form-item>
+            <p class="infinity-lable">To Date <span>*</span></p>
+            <nz-form-control>
+              <nz-date-picker formControlName="toDate" class="w-full" nzFormat="dd/MM/yyyy"></nz-date-picker>
+            </nz-form-control>
+            <p *ngIf="formErrors?.toDate?.required" class="text-red-400 text-sm mt-1">
+              To Date is required.
+            </p>
+          </nz-form-item>
+          <nz-form-item>
+            <p class="infinity-lable">Leave Days</p>
+            <nz-form-control>
+              <input
+                nz-input
+                class="w-full"
+                formControlName="leaveDays"
+                readonly
+                style="background-color: #f5f5f5; cursor: not-allowed;" />
+            </nz-form-control>
+          </nz-form-item>
 
-      <!-- Leave Reason -->
-      <nz-form-item>
-        <p class="infinity-lable">Leave Reason <span>*</span></p>
-        <nz-form-control>
-          <textarea
-            formControlName="reason"
-            nz-input
-            placeholder="Enter the reason for leave"
-            class="w-full pl-4"
-          ></textarea>
-        </nz-form-control>
-        <p *ngIf="formErrors?.reason?.required" class="text-red-400 text-sm mt-1">
-          Leave reason is required.
-        </p>
-      </nz-form-item>
+          <!-- Leave Reason -->
+          <nz-form-item>
+            <p class="infinity-lable">Leave Reason <span>*</span></p>
+            <nz-form-control>
+              <textarea
+                formControlName="reason"
+                nz-input
+                placeholder="Enter the reason for leave"
+                class="w-full pl-4"
+              ></textarea>
+            </nz-form-control>
+            <p *ngIf="formErrors?.reason?.required" class="text-red-400 text-sm mt-1">
+              Leave reason is required.
+            </p>
+          </nz-form-item>
 
      
     </div>
 
-    <!-- Submit Button -->
-    <div class="flex flex-row justify-center my-5">
-      <button
-  class="w-fit rounded-md"
-  type="submit"
-  nz-button
-  nzType="primary"
-  (click)="submitLeaveApplication()"
-  [disabled]="leaveForm.invalid || loading"
->
-  {{ isEditLeave ? 'Update Leave Application' : 'Submit Leave Application' }}
-</button>
+        <!-- Submit Button -->
+        <div class="flex flex-row justify-center my-5">
+          <button
+            class="w-fit rounded-md"
+            type="submit"
+            nz-button
+            nzType="primary"
+            (click)="submitLeaveApplication()"
+            [disabled]="leaveForm.invalid || loading"
+          >
+            {{ isEditLeave ? 'Update Leave Application' : 'Submit Leave Application' }}
+          </button>
+        </div>
+      </form>
     </div>
 
-  </form>
-</div>
+    <!-- Right Div -->
+    <div class="w-full p-4 border-2 border-blue-500 rounded-lg flex flex-col">
+      <h2 class="text-lg font-semibold text-center mb-4">Leave Balance</h2>
 
-<!-- right div -->
-<div class="w-full p-4 border-2 border-blue-500 rounded-lg"> 
-  <h2 class="text-lg font-semibold text-center">Leave Balance</h2> 
-  <ul class="mt-4 space-y-2"> 
-    <li class="flex justify-between"> 
-      <span class="font-medium">Casual Leave:</span>
-      <span>5 Days</span>
-    </li>
-    <li class="flex justify-between">
-      <span class="font-medium">Sick Leave:</span>
-      <span>3 Days</span>
-    </li>
-    <li class="flex justify-between"> 
-      <span class="font-medium">Duty Leave:</span>
-      <span>10 Days</span>
-    </li>
-   
-  </ul>
-</div>
+      <!-- Flexbox Layout -->
+      <div class="flex-1 flex flex-col gap-4">
+        <!-- Table (50% height) -->
+        <div class="flex-1 overflow-auto">
+          <div class="table-responsive">
+            <table class="table-auto w-full border-collapse border border-gray-300 rounded-lg shadow-lg">
+              <thead class="bg-blue-500 text-white">
+                <tr>
+                  <th class="px-4 py-2 border border-gray-300">#</th>
+                  <th class="px-4 py-2 border border-gray-300">Leave Type</th>
+                  <th class="px-4 py-2 border border-gray-300">Available Days</th>
+                  <th class="px-4 py-2 border border-gray-300">Used Days</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let leave of leaveBalances; let i = index" class="odd:bg-gray-100 even:bg-white hover:bg-blue-100">
+                  <td class="px-4 py-2 border border-gray-300 text-center">{{ i + 1 }}</td>
+                  <td class="px-4 py-2 border border-gray-300 text-center">{{ leave.type }}</td>
+                  <td class="px-4 py-2 border border-gray-300 text-center">{{ leave.availableDays }}</td>
+                  <td class="px-4 py-2 border border-gray-300 text-center">{{ leave.usedDays }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-
-</div>
-
+        <!-- Chart (50% height) -->
+        <div class="flex-1">
+          <div style="position: relative; height: 100%;">
+            <canvas id="leaveBalanceChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

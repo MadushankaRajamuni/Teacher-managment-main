@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { AppUtils } from '../../../core/config/app.utils';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-add-edit-leave',
@@ -48,6 +49,11 @@ export class AddEditLeaveComponent implements OnInit {
   leaveCategoryList: any = [];
   leaveTypeList: any = [];
   leaveAssigneeList: any = [];
+  leaveBalances: any[] = [
+    { type: 'Casual Leave', availableDays: 5, usedDays: 2 },
+    { type: 'Sick Leave', availableDays: 3, usedDays: 1 },
+    { type: 'Duty Leave', availableDays: 10, usedDays: 4 },
+  ];
 
   teachers: any[] = [];
  
@@ -105,6 +111,12 @@ export class AddEditLeaveComponent implements OnInit {
       this.isEditLeave = true;
       this.getOneLeave();
     }
+
+    // Render the leave balance chart
+    this.renderLeaveBalanceChart();
+
+    // Fetch leave balances when the component initializes
+    this.fetchLeaveBalances();
   }
 
   initLeaveForm(): void {
@@ -199,7 +211,6 @@ export class AddEditLeaveComponent implements OnInit {
       console.log('Form is invalid');
     }
   }
-  
 
   calculateLeaveDays() {
     const from = this.leaveForm.get('fromDate')?.value;
@@ -216,5 +227,65 @@ export class AddEditLeaveComponent implements OnInit {
 
     // Optionally set leaveDays field in form
     this.leaveForm.get('leaveDays')?.setValue(this.leaveDays, { emitEvent: false });
+  }
+
+  renderLeaveBalanceChart(): void {
+    const ctx = document.getElementById('leaveBalanceChart') as HTMLCanvasElement;
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Casual Leave', 'Sick Leave', 'Duty Leave'], // Leave categories
+        datasets: [
+          {
+            label: 'Available Days',
+            data: [5, 3, 10], // Available days for each leave type
+            backgroundColor: '#4caf50', // Green color for available days
+            borderColor: '#388e3c',
+            borderWidth: 1
+          },
+          {
+            label: 'Used Days',
+            data: [2, 1, 4], // Used days for each leave type
+            backgroundColor: '#ff9800', // Orange color for used days
+            borderColor: '#f57c00',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            stacked: false // Bars are grouped side by side
+          },
+          y: {
+            beginAtZero: true,
+            max: 21, // Set the maximum value of the Y-axis to 21
+            ticks: {
+              stepSize: 0.5, // Display points with half values (e.g., 0.5, 1.0, 1.5, etc.)
+              callback: function(value) {
+                return typeof value === 'number' ? value.toFixed(1) : value;
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            position: 'top' // Position of the legend
+          }
+        }
+      }
+    });
+  }
+
+  fetchLeaveBalances(): void {
+    // Replace this with your actual API call to fetch leave balances
+    this.leaveBalances = [
+      { type: 'Casual Leave', availableDays: 5, usedDays: 2 },
+      { type: 'Sick Leave', availableDays: 3, usedDays: 1 },
+      { type: 'Duty Leave', availableDays: 10, usedDays: 4 },
+    ];
   }
 }
