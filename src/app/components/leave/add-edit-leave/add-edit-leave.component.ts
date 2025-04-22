@@ -69,7 +69,6 @@ export class AddEditLeaveComponent implements OnInit {
       toDate: {},
       leaveDays: {},
       reason: {},
-      reliefAssignee: {}
     };
   }
 
@@ -92,11 +91,6 @@ export class AddEditLeaveComponent implements OnInit {
     { label: 'Half Day - Evening', value: 'HALF_EVENING' },
   ];
 
-  assigneeList = [
-    { id: '1', name: 'Alice Sharma' },
-    { id: '2', name: 'Bob Mehta' },
-    { id: '3', name: 'Carol Das' },
-  ];
 
   ngOnInit() {
     this.initLeaveForm();
@@ -121,7 +115,6 @@ export class AddEditLeaveComponent implements OnInit {
       toDate: [null, Validators.required],
       leaveDays: [null, [Validators.required, Validators.min(1)]],
       reason: ['', Validators.required],
-      reliefAssignee: [null, Validators.required],
     });
 
     this.leaveForm.valueChanges.subscribe(() => {

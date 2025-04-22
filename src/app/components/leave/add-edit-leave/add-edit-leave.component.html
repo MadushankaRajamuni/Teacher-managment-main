@@ -127,18 +127,7 @@
         </p>
       </nz-form-item>
 
-      <!-- Relief Assignee -->
-      <nz-form-item>
-        <p class="infinity-lable">Relief Assignee <span>*</span></p>
-        <nz-form-control>
-          <nz-select formControlName="reliefAssignee" class="w-full " nzPlaceHolder="Select Relief Assignee">
-            <nz-option *ngFor="let assignee of assigneeList" [nzValue]="assignee.id" [nzLabel]="assignee.name"></nz-option>
-          </nz-select>
-        </nz-form-control>
-        <p *ngIf="formErrors?.reliefAssignee?.required" class="text-red-400 text-sm mt-1">
-          Relief assignee is required.
-        </p>
-      </nz-form-item>
+     
     </div>
 
     <!-- Submit Button -->

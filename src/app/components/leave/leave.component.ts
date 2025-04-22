@@ -7,11 +7,8 @@ import { BreadcrumbComponent } from '../common/breadcrumb/breadcrumb.component';
 import { DatePipe } from '@angular/common';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
-import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
-import { NzOptionComponent, NzSelectComponent } from 'ng-zorro-antd/select';
 import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
 import { NzSpinComponent } from 'ng-zorro-antd/spin'; 
-import { NzSwitchComponent } from 'ng-zorro-antd/switch';
 import { NzTableComponent, NzThMeasureDirective } from 'ng-zorro-antd/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -27,13 +24,8 @@ import { TruncateTextPipe } from '../../core/pipes/truncate-text.pipe';
     DatePipe,
     NzButtonComponent,
     NzIconDirective,
-    NzInputDirective,
-    NzInputGroupComponent,
-    NzOptionComponent,
     NzPaginationComponent,
-    NzSelectComponent,
     NzSpinComponent,
-    NzSwitchComponent,
     NzTableComponent,
     NzThMeasureDirective,
     ReactiveFormsModule,

@@ -40,7 +40,7 @@
                   [nzScroll]="{ x: '2000px' }" nzTableLayout="fixed" [nzFrontPagination]="false" >
           <thead>
           <tr class="text-center">
-            <th nzWidth="100px" class="infinity-thead text-start">ID</th>
+            <th nzWidth="100px" class="infinity-thead text-start">Refference No</th>
             <th>Teacher Name</th>
             <th>Designation</th>
             <th>Status</th>
@@ -50,7 +50,7 @@
             <th>To Date</th>
             <th>Leave Days</th>
             <th>Leave Reason</th>
-            <th>Relief Assignee</th>
+      
 
 
             <th>
@@ -96,7 +96,6 @@
                 <td>{{ item.toDate | date: 'mediumDate' }}</td>
                 <td>{{item.leaveDays}}</td>
                 <td>{{ item.reason }}</td>
-                <td>{{ item.reliefAssignee}}</td>
                 <td>{{ item.createdAt | date: 'mediumDate' }}</td>
                 <td class="flex justify-start items-center gap-2">
                   <button nz-button nzType="dashed" routerLink="/admin/employees/add-edit/{{item._id}}">
