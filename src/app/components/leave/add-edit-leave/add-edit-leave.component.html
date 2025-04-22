@@ -20,7 +20,7 @@
   <form [formGroup]="leaveForm" nz-form [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
     <!-- Name -->
     <div class="grid grid-cols-1 gap-4">
-      <nz-form-item>
+      <!-- <nz-form-item>
         <p class="infinity-lable">Teacher Name <span>*</span></p>
         <nz-form-control>
           <nz-input-group nzSize="large">
@@ -36,7 +36,26 @@
         <p *ngIf="formErrors?.teacherName?.required" class="text-red-400 text-sm mt-1">
           Teacher Name is required.
         </p>
+      </nz-form-item> -->
+      <nz-form-item>
+        <p class="infinity-lable">Teacher Name <span>*</span></p>
+        <nz-form-control>
+          <nz-select
+            formControlName="teacherName"
+            nzPlaceHolder="Select Teacher"
+            [nzLoading]="loading"
+            [nzOptions]="teachers"
+            nzAllowClear
+            nzShowSearch
+          >
+          </nz-select>
+        </nz-form-control>
+        <p *ngIf="leaveForm.controls['teacherName'].hasError('required')" class="text-red-400 text-sm mt-1">
+          Teacher Name is required.
+        </p>
       </nz-form-item>
+      
+      
       <nz-form-item>
         <p class="infinity-lable">Designation <span>*</span></p>
         <nz-form-control>
