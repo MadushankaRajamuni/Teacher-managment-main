@@ -15,6 +15,12 @@ import { RouterLink } from '@angular/router';
 import { NzImageDirective, NzImageModule } from 'ng-zorro-antd/image';  
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { TruncateTextPipe } from '../../core/pipes/truncate-text.pipe';   
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
+
 
 
 @Component({
@@ -34,7 +40,11 @@ import { TruncateTextPipe } from '../../core/pipes/truncate-text.pipe';
     NzImageDirective,
     NzModalModule,
     NzImageModule,
-    TruncateTextPipe
+    TruncateTextPipe,
+    CommonModule,
+    NzDropDownModule,
+    NzMenuModule,
+    NgClass,
   ],
   templateUrl: './leave.component.html',
   styleUrl: './leave.component.scss'
@@ -67,10 +77,31 @@ export class LeaveComponent implements OnInit{
   constructor(
     private notification: NzNotificationService,
     private modalService: NzModalService,
-    private leaveService: LeaveService,) {
+    private leaveService: LeaveService,
+    private message: NzMessageService,) {
 }
 ngOnInit() {
   Promise.all([ this.loadTableData()], )
+}
+openStatusMenu(item: any): void {
+  console.log('Opening status menu for item:', item);
+}
+confirmStatusChange(item: any, newStatus: string): void {
+  this.modalService.confirm({
+    nzTitle: 'Are you sure?',
+    nzContent: `Are you sure you want to change status to "${newStatus}"?`,
+    nzOnOk: () => this.updateLeaveStatus(item._id, newStatus)
+  });
+}
+async updateLeaveStatus(id: string, status: string): Promise<void> {
+  try {
+    const updated = await this.leaveService.updateLeaveStatus(id, status);
+    this.message.success(`Status changed to ${status}`);
+    this.loadTableData(); 
+  } catch (error) {
+    console.error(error);
+    this.message.error('Failed to update status');
+  }
 }
 
 async loadTableData(): Promise<void> {

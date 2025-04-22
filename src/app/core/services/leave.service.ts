@@ -60,4 +60,14 @@ export class LeaveService {
           });
         });
       }
+
+      updateLeaveStatus(id: string, status: string): Promise<any> {
+        const payload = { _id: id, status };
+        return new Promise((resolve, reject) => {
+          this.http.put(`${SETTINGS.BASE_API}/leave/update`, payload).subscribe({
+            next: (response: any) => resolve(response),
+            error: (error: any) => reject(error.error),
+          });
+        });
+      }
 }
