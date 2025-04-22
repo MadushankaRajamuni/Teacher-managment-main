@@ -8,3 +8,67 @@ section {
     margin-bottom: 2rem;
   }
   
+// Summary Cards
+.summary-card {
+  transition: all 0.3s ease-in-out;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Charts
+.chart-container {
+  height: 320px;
+  position: relative;
+  
+  canvas {
+    transition: opacity 0.3s ease-in-out;
+  }
+}
+
+// Recent Activity
+.activity-log {
+  .log-item {
+    transition: all 0.2s ease-in-out;
+    border: 1px solid transparent;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+      border-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+// Header
+header {
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1));
+    pointer-events: none;
+  }
+}
+
+// General
+.bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+// Card hover effects
+.bg-white {
+  transition: all 0.3s ease-in-out;
+  
+  &:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+}  

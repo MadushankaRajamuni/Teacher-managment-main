@@ -16,11 +16,11 @@
         <nz-option [nzValue]="false" nzLabel="Inactive"></nz-option>
       </nz-select>
 
-      <nz-select [(ngModel)]="depart" [nzLoading]="depLoading" [disabled]="depLoading" [nzPlaceHolder]="'Select Department'">
+      <!-- <nz-select [(ngModel)]="depart" [nzLoading]="depLoading" [disabled]="depLoading" [nzPlaceHolder]="'Select Department'">
         @for (c of departments; track c._id) {
           <nz-option [nzLabel]="c.depName" [nzValue]="c._id"></nz-option>
         }
-      </nz-select>
+      </nz-select> -->
       <button nz-button nzType="primary" (click)="onSearch()">Search</button>
       <button nz-button nzType="dashed" (click)="onReset()">Reset
         Filters

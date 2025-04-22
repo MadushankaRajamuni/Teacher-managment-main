@@ -39,11 +39,11 @@ export class AddEditDepartmentComponent implements OnInit {
       path: "/admin/dashboard"
     },
     {
-      name: "Department",
+      name: "Sections",
       path: "/admin/departments"
     },
     {
-      name: "Add Department",
+      name: "Add Section",
     }
   ];
   departForm: any;
