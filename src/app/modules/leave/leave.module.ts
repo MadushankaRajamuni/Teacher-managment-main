@@ -11,6 +11,8 @@ import { LeaveComponent } from '../../components/leave/leave.component';
 import { RouterModule } from '@angular/router'; 
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputGroupComponent } from 'ng-zorro-antd/input';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 
 @NgModule({
@@ -28,6 +30,8 @@ import { NzInputGroupComponent } from 'ng-zorro-antd/input';
     RouterModule,
     LeaveComponent,
     NzInputModule, 
+    NzDropDownModule,
+    NzMenuModule,
   ],
   exports: [
 

@@ -57,7 +57,7 @@ export class LayoutComponent implements OnInit{
     },
     {
       name: "LEAVE",
-      path: "/admin/leave" 
+      path: "/admin/leave"
     },
     {
       name: "LEAVE_ADD",
