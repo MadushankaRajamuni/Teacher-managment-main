@@ -84,33 +84,60 @@ export class UserComponent {
   }
 
 
-  async loadTableData(): Promise<void> {
-    this.loading = true;
-    try {
-      const response = await this.employeeService.getPagedEmployee({
-        filters: {
-          status: this.status,
-          searchTerm: this.searchTerm,
-          depart: this.depart,
-        },
-        pageIndex: this.pageIndex,
-        pageSize: this.pageSize,
-        sortOrder: this.sortOrder,
-      });
-  
-      const pagedData = response as any;
-      // Filter data to include only employees with jobTitle 'Teacher'
-      this.tableData = pagedData[0]?.data.filter((employee: any) => employee.jobTitle === "Teacher");
-  
-      this.totalRecords = pagedData[0]?.metadata[0]?.total;
-      this.loading = false;
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.loading = false;
-    }
+//   async loadTableData(): Promise<void> {
+//     this.loading = true;
+//     try {
+//       const response = await this.employeeService.getPagedEmployee({
+//         filters: {
+//           status: this.status,
+//           searchTerm: this.searchTerm,
+//           depart: this.depart,
+//         },
+//         pageIndex: this.pageIndex,
+//         pageSize: this.pageSize,
+//         sortOrder: this.sortOrder,
+//       });
+//
+//       const pagedData = response as any;
+//       // Filter data to include only employees with jobTitle 'Teacher'
+//       this.tableData = pagedData[0]?.data.filter((employee: any) => employee.jobTitle === "Teacher");
+//
+//       this.totalRecords = pagedData[0]?.metadata[0]?.total;
+//       this.loading = false;
+//     } catch (e) {
+//       console.error(e);
+//     } finally {
+//       this.loading = false;
+//     }
+//   }
+async loadTableData(): Promise<void> {
+  this.loading = true;
+  try {
+    const response = await this.employeeService.getPagedEmployee({
+      filters: {
+        status: this.status,
+        searchTerm: this.searchTerm,
+        depart: this.depart,
+      },
+      pageIndex: this.pageIndex,
+      pageSize: this.pageSize,
+      sortOrder: this.sortOrder,
+    });
+
+    const pagedData = response as any;
+
+    // Include all employees regardless of jobTitle
+    this.tableData = pagedData[0]?.data;
+
+    this.totalRecords = pagedData[0]?.metadata?.[0]?.total ?? 0;
+  } catch (e) {
+    console.error(e);
+  } finally {
+    this.loading = false;
   }
-  
+}
+
+
 
   onSearch(){
     this.loadTableData()

@@ -1,7 +1,7 @@
 <app-breadcrumb [crumbs]="breadcrumbs"/>
 <div class="inner-content">
   <div class="sm:flex justify-between gap-3 mb-5">
-    <p class="infinity-title">Teachers</p>
+    <p class="infinity-title">Users</p>
     <button nz-button nzType="primary" routerLink="/admin/employees/add-edit">Add New Teacher</button>
   </div>
 
@@ -81,7 +81,7 @@
                     <p class="emp-name text-nowrap">{{ (item.firstname + ' ' + item.lastname) | truncateText }}</p>
                   </div>
                 </td>
-          
+
                 <td class="text-nowrap"><a [href]="'mailto:' + item.email">{{ item.email }}</a></td>
                 <td>{{ item.nic }}</td>
                 <td><a [href]="'tel:' + (item.mobile || '')">{{ item.mobile ? item.mobile : '-' }}</a></td>
