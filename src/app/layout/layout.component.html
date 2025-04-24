@@ -10,18 +10,27 @@
           <nz-icon nzType="dashboard"/>
           <span>Dashboard</span>
         </li>
-        <li nz-submenu nzTitle="Users" nzIcon="user">
+        <li nz-submenu nzTitle="Admins/Users" nzIcon="user">
+          <ul>
+            <li nz-menu-item (click)="routeLink('USERS')"
+                [nzSelected]="router.isActive(routeLinkActive('USERS'), true)">View Admins/Users</li>
+            <li nz-menu-item (click)="routeLink('USERS_ADD')"
+                [nzSelected]="router.isActive(routeLinkActive('USERS_ADD'), true)">Add Admin</li>
+          </ul>
+        </li>
+        
+        <li nz-submenu nzTitle="Employess" nzIcon="user">
           <ul>
             <li nz-menu-item (click)="routeLink('EMPLOYEE')"
-                [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE'), true)">View Users</li>
+                [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE'), true)">View Employess</li>
             <li nz-menu-item (click)="routeLink('EMPLOYEE_ADD')"
-                [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE_ADD'), true)">Add User</li>
+                [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE_ADD'), true)">Add Employer</li>
           </ul>
         </li>
         <li nz-submenu nzTitle="Teachers" nzIcon="team">
           <ul>
             <li nz-menu-item (click)="routeLink('TEACHERS')"
-                [nzSelected]="router.isActive(routeLinkActive('TEACHERS'), true)"> View Teachers
+                [nzSelected]="router.isActive(routeLinkActive('USERS'), true)"> View Teachers
             </li>
           </ul>
         </li>

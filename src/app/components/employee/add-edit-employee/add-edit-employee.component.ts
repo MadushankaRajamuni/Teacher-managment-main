@@ -43,7 +43,7 @@ import {FileService} from '../../../core/services/file.service';
 })
 export class AddEditEmployeeComponent implements OnInit {
   route: ActivatedRoute = inject(ActivatedRoute);
-
+  jobTitles = ['Teacher', 'Principal', 'Vice Principal'];
   breadcrumbs: any[] = [
     {
       name: "Home",
