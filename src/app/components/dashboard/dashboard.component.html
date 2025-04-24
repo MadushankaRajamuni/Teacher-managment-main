@@ -1,20 +1,21 @@
 <!-- Header -->
-<header class="bg-gradient-to-r from-blue-700 to-blue-600 text-white p-6 shadow-lg">
-  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 container mx-auto px-4">
+<header class="text-white p-8 shadow-xl" style="background: linear-gradient(to right, #1890ff, #1890ff);">
+  <div class="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 animate-fade-in-down">
     <div>
-      <h1 class="text-2xl sm:text-3xl font-bold">Admin Dashboard</h1>
-      <p class="text-blue-100 mt-1">Welcome back! Here's what's happening today.</p>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Dashboard</h1>
+      <p class="text-blue-100 mt-2 text-sm sm:text-base">Here's a quick overview of what's happening today. Glad to have you back!</p>
     </div>
     <button 
-      (click)="navigateToAddLeave()"
-      class="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-md flex items-center gap-2">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-      </svg>
-      Apply Leave
-    </button>
+    (click)="navigateToAddLeave()"
+    class="bg-[#0f4c81] hover:bg-[#0c3a63] text-white px-6 py-3 rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg flex items-center gap-2">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+    </svg>
+    <span class="font-semibold">Apply Leave</span>
+  </button>   
   </div>
 </header>
+
 
 <!-- Main Content -->
 <div class="p-6 bg-gray-50 min-h-screen">
