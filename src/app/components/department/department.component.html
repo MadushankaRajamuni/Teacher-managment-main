@@ -1,6 +1,6 @@
 <app-breadcrumb [crumbs]="breadcrumbs"/>
 <div class="inner-content">
-  <div class="sm:flex justify-between gap-3 mb-5">
+  <div class="sm:flex justify-between gap-3 mb-5"> //comment
     <p class="infinity-title">Sections</p>
     <button nz-button nzType="primary" routerLink="/admin/departments/add-edit">Add New Sections</button>
   </div>
@@ -66,9 +66,9 @@
                              (ngModelChange)="onSwitchChange($event, item)"></nz-switch>
                   <ng-template #checkedTemplate>
                     @if (item.active) {
-                      <span nzColor="success">Active</span>
+                      <span nzColor="success" class="bg-blue-500 text-white px-2 py-1 rounded">Active</span>
                     } @else {
-                      <span nzColor="error">Inactive</span>
+                      <span nzColor="error" class="bg-red-500 text-white px-2 py-1 rounded">Inactive</span>
                     }
                   </ng-template>
                 </td>
