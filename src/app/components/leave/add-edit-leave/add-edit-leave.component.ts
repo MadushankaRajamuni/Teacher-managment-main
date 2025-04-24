@@ -13,7 +13,6 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { AppUtils } from '../../../core/config/app.utils';
 import { Chart } from 'chart.js';
-import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-add-edit-leave',
@@ -33,7 +32,7 @@ import { Chart } from 'chart.js';
   standalone: true
 })
 export class AddEditLeaveComponent implements OnInit {
-  breadcrumbs: any[] = [
+  breadcrumbs = [
     { name: "Home", path: "/admin/dashboard" },
     { name: "Leave", path: "/admin/leave" },
     { name: "Add Leave Application" }
@@ -47,22 +46,13 @@ export class AddEditLeaveComponent implements OnInit {
   isEditLeave = false;
   leaveDays: number = 0;
 
-  leaveCategoryList: any = [];
-  leaveTypeList: any = [];
-  leaveAssigneeList: any = [];
-  leaveBalances: any[] = [
-    { type: 'Casual Leave', availableDays: 5, usedDays: 2 },
-    { type: 'Sick Leave', availableDays: 3, usedDays: 1 },
-    { type: 'Duty Leave', availableDays: 10, usedDays: 4 },
-  ];
+  leaveCategoryList: any[] = [];
+  leaveTypeList: any[] = [];
+  leaveAssigneeList: any[] = [];
+
+  leaveBalances: any[] = [];
 
   teachers: any[] = [];
- 
-  leaveBalances: any[] = [
-    { type: 'Casual Leave', availableDays: 5, usedDays: 2 },
-    { type: 'Sick Leave', availableDays: 3, usedDays: 1 },
-    { type: 'Duty Leave', availableDays: 10, usedDays: 4 },
-  ];
 
   constructor(
     private fb: NonNullableFormBuilder,
@@ -84,7 +74,6 @@ export class AddEditLeaveComponent implements OnInit {
     };
   }
 
-  // Static dropdown options
   leaveCategories = [
     { label: 'Casual Leave', value: 'CASUAL' },
     { label: 'Sick Leave', value: 'SICK' },
@@ -96,17 +85,15 @@ export class AddEditLeaveComponent implements OnInit {
     { label: 'Grade II', value: 'GRADE_2' },
     { label: 'Grade III', value: 'GRADE_3' },
   ];
-  
+
   leaveTypes = [
     { label: 'Full Day', value: 'FULL' },
     { label: 'Half Day - Morning', value: 'HALF_MORNING' },
     { label: 'Half Day - Evening', value: 'HALF_EVENING' },
   ];
 
-
   ngOnInit() {
     this.loadTeachers();
-    
     this.initLeaveForm();
 
     this.leaveForm.get('fromDate')?.valueChanges.subscribe(() => this.calculateLeaveDays());
@@ -118,16 +105,6 @@ export class AddEditLeaveComponent implements OnInit {
       this.getOneLeave();
     }
 
-    // Render the leave balance chart
-    this.renderLeaveBalanceChart();
-
-    // Fetch leave balances when the component initializes
-    this.fetchLeaveBalances();
-
-    // Render the leave balance chart
-    this.renderLeaveBalanceChart();
-
-    // Fetch leave balances when the component initializes
     this.fetchLeaveBalances();
   }
 
@@ -153,52 +130,95 @@ export class AddEditLeaveComponent implements OnInit {
     try {
       const leave = await this.leaveService.getOneLeaveId(this.leaveId);
       this.leaveForm.patchValue(leave);
-    } catch (e: any) {
+    } catch (e) {
       console.error(e);
     } finally {
       this.loading = false;
     }
   }
-  
+
   async loadTeachers(): Promise<void> {
     this.loading = true;
     try {
-  
       const payload = {
-        filters: {
-          jobTitle: 'Teacher',  
-        },
-        pageIndex: 0,           
-        pageSize: 100,         
-        sortOrder: 1,          
+        filters: { jobTitle: 'Teacher' },
+        pageIndex: 0,
+        pageSize: 100,
+        sortOrder: 1,
       };
-  
-     
-      console.log('Sending payload to get teachers:', payload);
-  
-      
       const response = await this.employeeService.getPagedEmployee(payload);
-  
-      
       this.teachers = response.map((teacher: any) => ({
         label: `${teacher.firstname} ${teacher.lastname}`,
-        value: teacher._id,  
+        value: teacher._id,
       }));
-  
-     
-      console.log('Teachers loaded successfully:', this.teachers);
-    } catch (e: any) {
-      
-      console.error('Error loading teachers:', e);
-      if (e.response) {
-        console.error('Error details:', e.response);
-      }
-      this.notification.error('Error', 'An error occurred while loading teachers.');
+    } catch (e) {
+      console.error(e);
     } finally {
       this.loading = false;
     }
   }
-  
+
+  fetchLeaveBalances(): void {
+    this.leaveBalances = [
+      { type: 'Casual Leave', availableDays: 5, usedDays: 2 },
+      { type: 'Sick Leave', availableDays: 3, usedDays: 1 },
+      { type: 'Duty Leave', availableDays: 10, usedDays: 4 },
+    ];
+    this.renderLeaveBalanceChart();
+  }
+
+  renderLeaveBalanceChart(): void {
+    const canvas = document.getElementById('leaveBalanceChart') as HTMLCanvasElement;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: this.leaveBalances.map(lb => lb.type),
+        datasets: [
+          {
+            label: 'Available Days',
+            backgroundColor: '#52c41a',
+            data: this.leaveBalances.map(lb => lb.availableDays),
+          },
+          {
+            label: 'Used Days',
+            backgroundColor: '#f5222d',
+            data: this.leaveBalances.map(lb => lb.usedDays),
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'top' },
+          tooltip: {
+            callbacks: {
+              label: function (context: any) {
+                return `${context.dataset.label}: ${context.raw}`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  calculateLeaveDays(): void {
+    const fromDate = new Date(this.leaveForm.value.fromDate);
+    const toDate = new Date(this.leaveForm.value.toDate);
+    if (fromDate && toDate && fromDate <= toDate) {
+      const timeDiff = Math.abs(toDate.getTime() - fromDate.getTime());
+      this.leaveDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+      this.leaveForm.get('leaveDays')?.setValue(this.leaveDays);
+    } else {
+      this.leaveForm.get('leaveDays')?.setValue(null);
+    }
+  }
+
   async submitLeaveApplication(): Promise<void> {
     if (this.leaveForm.valid) {
       this.loading = true;
@@ -223,142 +243,5 @@ export class AddEditLeaveComponent implements OnInit {
       console.log('Form is invalid');
     }
   }
-
-  calculateLeaveDays() {
-    const from = this.leaveForm.get('fromDate')?.value;
-    const to = this.leaveForm.get('toDate')?.value;
-
-    if (from && to) {
-      const fromDate = new Date(from);
-      const toDate = new Date(to);
-      const diffTime = Math.abs(toDate.getTime() - fromDate.getTime());
-      this.leaveDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-    } else {
-      this.leaveDays = 0;
-    }
-
-    // Optionally set leaveDays field in form
-    this.leaveForm.get('leaveDays')?.setValue(this.leaveDays, { emitEvent: false });
-  }
-
-  renderLeaveBalanceChart(): void {
-    const ctx = document.getElementById('leaveBalanceChart') as HTMLCanvasElement;
-
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Casual Leave', 'Sick Leave', 'Duty Leave'], // Leave categories
-        datasets: [
-          {
-            label: 'Available Days',
-            data: [5, 3, 10], // Available days for each leave type
-            backgroundColor: '#4caf50', // Green color for available days
-            borderColor: '#388e3c',
-            borderWidth: 1
-          },
-          {
-            label: 'Used Days',
-            data: [2, 1, 4], // Used days for each leave type
-            backgroundColor: '#ff9800', // Orange color for used days
-            borderColor: '#f57c00',
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            stacked: false // Bars are grouped side by side
-          },
-          y: {
-            beginAtZero: true,
-            max: 21, // Set the maximum value of the Y-axis to 21
-            ticks: {
-              stepSize: 0.5, // Display points with half values (e.g., 0.5, 1.0, 1.5, etc.)
-              callback: function(value) {
-                return typeof value === 'number' ? value.toFixed(1) : value;
-              }
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            position: 'top' // Position of the legend
-          }
-        }
-      }
-    });
-  }
-
-  fetchLeaveBalances(): void {
-    // Replace this with your actual API call to fetch leave balances
-    this.leaveBalances = [
-      { type: 'Casual Leave', availableDays: 5, usedDays: 2 },
-      { type: 'Sick Leave', availableDays: 3, usedDays: 1 },
-      { type: 'Duty Leave', availableDays: 10, usedDays: 4 },
-    ];
-  }
-}
-
-  renderLeaveBalanceChart(): void {
-    const ctx = document.getElementById('leaveBalanceChart') as HTMLCanvasElement;
-
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Casual Leave', 'Sick Leave', 'Duty Leave'], // Leave categories
-        datasets: [
-          {
-            label: 'Available Days',
-            data: [5, 3, 10], // Available days for each leave type
-            backgroundColor: '#4caf50', // Green color for available days
-            borderColor: '#388e3c',
-            borderWidth: 1
-          },
-          {
-            label: 'Used Days',
-            data: [2, 1, 4], // Used days for each leave type
-            backgroundColor: '#ff9800', // Orange color for used days
-            borderColor: '#f57c00',
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            stacked: false // Bars are grouped side by side
-          },
-          y: {
-            beginAtZero: true,
-            max: 21, // Set the maximum value of the Y-axis to 21
-            ticks: {
-              stepSize: 0.5, // Display points with half values (e.g., 0.5, 1.0, 1.5, etc.)
-              callback: function(value) {
-                return typeof value === 'number' ? value.toFixed(1) : value;
-              }
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            position: 'top' // Position of the legend
-          }
-        }
-      }
-    });
-  }
-
-  fetchLeaveBalances(): void {
-    // Replace this with your actual API call to fetch leave balances
-    this.leaveBalances = [
-      { type: 'Casual Leave', availableDays: 5, usedDays: 2 },
-      { type: 'Sick Leave', availableDays: 3, usedDays: 1 },
-      { type: 'Duty Leave', availableDays: 10, usedDays: 4 },
-    ];
-  }
+  
 }

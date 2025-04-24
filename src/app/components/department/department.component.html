@@ -1,6 +1,6 @@
 <app-breadcrumb [crumbs]="breadcrumbs"/>
 <div class="inner-content">
-  <div class="sm:flex justify-between gap-3 mb-5">
+  <div class="sm:flex justify-between gap-3 mb-5"> //comment
     <p class="infinity-title">Sections</p>
     <button nz-button nzType="primary" routerLink="/admin/departments/add-edit">Add New Sections</button>
   </div>
@@ -33,13 +33,13 @@
         <nz-table #depTable class="mt-8" [nzData]="tableData" nzSize="middle" [nzOuterBordered]="true"
                   [nzScroll]="{ x: '1180px' }" nzTableLayout="fixed" [nzFrontPagination]="false">
           <thead>
-          <tr class="text-center">
-            <th class="infinity-thead text-start">ID</th>
-            <th>Section Name</th>
-            <th>Description</th>
-            <th>Status</th>
+          <tr class="text-left">
+            <th class="infinity-thead text-left">ID</th>
+            <th class="text-left">Section Name</th>
+            <th class="text-left">Description</th>
+            <th class="text-left">Status</th>
             <th>
-              <div class="flex justify-center w-full items-center pr-2">
+              <div class="flex justify-start w-full items-center pr-2">
                 <span>Created Date</span>
                 @if (sortOrder === -1) {
                   <span class="cursor-pointer" (click)="sort()"><span nz-icon nzType="caret-up"
@@ -50,30 +50,30 @@
                 }
               </div>
             </th>
-            <th nzWidth="200px">Actions</th>
+            <th nzWidth="200px" class="text-left">Actions</th>
           </tr>
           </thead>
           <tbody>
 
             @for (item of tableData; track item._id) {
-              <tr class="text-center">
-                <td class="clickable-field text-start">{{ item.refNo }}</td>
-                <td>{{ item.depName }}</td>
-                <td>{{ item.description ? item.description : '-' }}</td>
-                <td>
+              <tr class="text-left">
+                <td class="clickable-field text-left">{{ item.refNo }}</td>
+                <td class="text-left">{{ item.depName }}</td>
+                <td class="text-left">{{ item.description ? item.description : '-' }}</td>
+                <td class="text-left">
                   <nz-switch [(ngModel)]="item.active" [nzCheckedChildren]="checkedTemplate"
                              [nzUnCheckedChildren]="checkedTemplate"
                              (ngModelChange)="onSwitchChange($event, item)"></nz-switch>
                   <ng-template #checkedTemplate>
                     @if (item.active) {
-                      <span nzColor="success">Active</span>
+                      <span nzColor="success" class="bg-blue-500 text-white px-2 py-1 rounded">Active</span>
                     } @else {
-                      <span nzColor="error">Inactive</span>
+                      <span nzColor="error" class="bg-red-500 text-white px-2 py-1 rounded">Inactive</span>
                     }
                   </ng-template>
                 </td>
-                <td>{{ item.createdAt | date: 'mediumDate' }}</td>
-                <td class="flex justify-start gap-2">
+                <td class="text-left">{{ item.createdAt | date: 'mediumDate' }}</td>
+                <td class="flex justify-start gap-2 text-left">
                   <button nz-button nzType="dashed" routerLink="/admin/departments/add-edit/{{item._id}}">
                     Edit
                   </button>
