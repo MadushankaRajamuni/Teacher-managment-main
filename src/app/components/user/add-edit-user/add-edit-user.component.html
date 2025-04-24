@@ -73,6 +73,28 @@
           </nz-form-item>
 
           <nz-form-item>
+            <p class="infinity-lable">NIC <span>*</span></p>
+            <nz-form-control>
+              <nz-input-group nzSize="large">
+                <input formControlName="nic" nz-input type="text" placeholder="Enter NIC"/>
+              </nz-input-group>
+            </nz-form-control>
+            @if (formErrors?.nic?.required) {
+              <p class="text-red-400 text-sm mt-1">NIC is required.</p>
+            }
+          </nz-form-item>
+          <nz-form-item>
+            <p class="infinity-lable">Department <span>*</span></p>
+            <nz-form-control>
+              <nz-select formControlName="department">
+                @for (c of departments; track c._id) {
+                  <nz-option [nzLabel]="c.depName" [nzValue]="c._id"></nz-option>
+                }
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
             <p class="infinity-lable">Profile Picture</p>
             <nz-upload
               class="avatar-uploader"

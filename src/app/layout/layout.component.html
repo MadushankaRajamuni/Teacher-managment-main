@@ -10,6 +10,7 @@
           <nz-icon nzType="dashboard"/>
           <span>Dashboard</span>
         </li>
+        @if (loggedInUser?.role?.name === 'SUPER_ADMIN' || loggedInUser?.role?.name === 'CLERK') {
         <li nz-submenu nzTitle="Admins/Users" nzIcon="user">
           <ul>
             <li nz-menu-item (click)="routeLink('USERS')"
@@ -18,15 +19,34 @@
                 [nzSelected]="router.isActive(routeLinkActive('USERS_ADD'), true)">Add Admin</li>
           </ul>
         </li>
+      }
         
-        <li nz-submenu nzTitle="Employess" nzIcon="user">
+@if (loggedInUser?.role?.name === 'SUPER_ADMIN' || loggedInUser?.role?.name === 'CLERK') {
+        <li nz-submenu nzTitle="Employees" nzIcon="user">
           <ul>
-            <li nz-menu-item (click)="routeLink('EMPLOYEE')"
-                [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE'), true)">View Employess</li>
+    
+            <li nz-submenu nzTitle="View Employees">
+              <ul>
+                <li nz-menu-item (click)="routeLink('EMPLOYEE_ACADAMIC')"
+                    [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE_ACADAMIC'), true)">
+                  Acadamic
+                </li>
+                <li nz-menu-item (click)="routeLink('EMPLOYEE_INACTIVE')"
+                    [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE_NON_ACADAMIC'), true)">
+                  Non-Acadamic
+                </li>
+              </ul>
+            </li>
+        
+            <!-- Regular menu item -->
             <li nz-menu-item (click)="routeLink('EMPLOYEE_ADD')"
-                [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE_ADD'), true)">Add Employer</li>
+                [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE_ADD'), true)">
+              Add Employee
+            </li>
           </ul>
         </li>
+      }
+      @if (loggedInUser?.role?.name === 'SUPER_ADMIN' || loggedInUser?.role?.name === 'CLERK') {
         <li nz-submenu nzTitle="Teachers" nzIcon="team">
           <ul>
             <li nz-menu-item (click)="routeLink('TEACHERS')"
@@ -34,6 +54,8 @@
             </li>
           </ul>
         </li>
+      }
+          
         <li nz-submenu nzTitle="Leave" nzIcon="schedule">
           <ul>
             <li nz-menu-item (click)="routeLink('LEAVE')"
@@ -42,6 +64,7 @@
                 [nzSelected]="router.isActive(routeLinkActive('LEAVE_ADD'), true)">Add Leave</li>
           </ul>
         </li>
+        @if (loggedInUser?.role?.name === 'SUPER_ADMIN' || loggedInUser?.role?.name === 'CLERK') {
         <li nz-submenu nzTitle="Section" nzIcon="branches">
           <ul>
             <li nz-menu-item (click)="routeLink('DEPART')"
@@ -50,6 +73,7 @@
                 [nzSelected]="router.isActive(routeLinkActive('DEPART_ADD'), true)">Add Section</li>
           </ul>
         </li>
+      }
         <li nz-menu-item (click)="routeLink('LOGS')"
             [nzSelected]="router.isActive(routeLinkActive('LOGS'), true)">
           <nz-icon nzType="container"/>
