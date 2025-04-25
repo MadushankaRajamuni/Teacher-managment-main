@@ -2,7 +2,7 @@
   <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" class="">
     <div class="flex h-[200dvh] flex-col pb-3">
       <div class="logo" [ngClass]="{'': !isCollapsed, 'hidden': isCollapsed}">
-        <img src="/assets/logo.png" class="w-full h-full object-contain" alt="Logo">
+        <img src="/assets/logo.png" class="w-16 h-16 object-contain" alt="Logo">
       </div>
       <ul nz-menu nzTheme="dark" nzMode="inline">
         <li nz-menu-item (click)="routeLink('DASHBOARD')"
