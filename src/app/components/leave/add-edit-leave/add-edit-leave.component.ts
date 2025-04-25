@@ -77,7 +77,7 @@ export class AddEditLeaveComponent implements OnInit {
   leaveCategories = [
     { label: 'Casual Leave', value: 'CASUAL' },
     { label: 'Sick Leave', value: 'SICK' },
-    { label: 'Earned Leave', value: 'EARNED' },
+    { label: 'other Leave', value: 'EARNED' },
   ];
 
   designations = [
@@ -162,7 +162,7 @@ export class AddEditLeaveComponent implements OnInit {
     this.leaveBalances = [
       { type: 'Casual Leave', availableDays: 5, usedDays: 2 },
       { type: 'Sick Leave', availableDays: 3, usedDays: 1 },
-      { type: 'Duty Leave', availableDays: 10, usedDays: 4 },
+      { type: 'Other Leave', availableDays: 10, usedDays: 4 },
     ];
     this.renderLeaveBalanceChart();
   }
