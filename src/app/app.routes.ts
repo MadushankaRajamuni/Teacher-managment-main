@@ -7,6 +7,8 @@ import {AddEditUserComponent} from './components/user/add-edit-user/add-edit-use
 import {DepartmentComponent} from './components/department/department.component';
 import {AddEditDepartmentComponent} from './components/department/add-edit-department/add-edit-department.component';
 import {LogsComponent} from './components/logs/logs.component';
+import { NonAcadamicComponent } from './components/employee/non-acadamic/non-acadamic.component';
+import { AcadamicComponent } from './components/employee/acadamic/acadamic.component';
 
 
 export const routes: Routes = [
@@ -38,6 +40,14 @@ export const routes: Routes = [
       {
         path: 'users',
         component: UserComponent,
+      },
+      {
+        path: 'acadamic',
+        component: AcadamicComponent,
+      },
+      {
+        path: 'non-acadamic',
+        component:  NonAcadamicComponent,
       },
       {
         path: 'users/add-edit',

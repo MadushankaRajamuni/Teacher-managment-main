@@ -94,8 +94,8 @@ export class UserComponent {
           searchTerm: this.searchTerm,
           depart: this.depart,
         },
-        pageIndex: 0,  // Set to 0 for fetching all data from the beginning
-        pageSize: 1000, // Set a large pageSize (e.g., 1000) to fetch all records in one go, adjust as necessary
+        pageIndex: 0,  
+        pageSize: 1000, 
         sortOrder: this.sortOrder,
       });
   

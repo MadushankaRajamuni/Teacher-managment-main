@@ -56,6 +56,14 @@ export class LayoutComponent implements OnInit{
       path: "/admin/employees/add-edit"
     },
     {
+      name: "ACADAMIC",
+      path: "/admin/acadamic"
+    },
+    {
+      name: "NON_ACADAMIC",
+      path: "/admin/non-acadamic"
+    },
+    {
       name: "LEAVE",
       path: "/admin/leave"
     },
