@@ -37,7 +37,7 @@
           Teacher Name is required.
         </p>
       </nz-form-item> -->
-      <nz-form-item>
+      <!-- <nz-form-item>
         <p class="infinity-lable">Teacher Name <span>*</span></p>
         <nz-form-control>
           <nz-select
@@ -53,7 +53,29 @@
         <p *ngIf="leaveForm.controls['teacherName'].hasError('required')" class="text-red-400 text-sm mt-1">
           Teacher Name is required.
         </p>
+      </nz-form-item> -->
+      <nz-form-item>
+        <p class="infinity-lable">Teacher Name <span>*</span></p>
+        <nz-form-control>
+          <nz-select
+            formControlName="teacherName"
+            nzPlaceHolder="Select User"
+            nzAllowClear
+            nzShowSearch
+          >
+            <nz-option
+              *ngFor="let user of userList"
+              [nzValue]="user._id"
+              [nzLabel]="user.refNo + ' ' + user.firstname + ' ' + user.lastname"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+        <p *ngIf="leaveForm.controls['teacherName'].hasError('required')" class="text-red-400 text-sm mt-1">
+          Teacher Name is required.
+        </p>
       </nz-form-item>
+      
+      
       
       
       <nz-form-item>
@@ -102,22 +124,33 @@
       <nz-form-item>
         <p class="infinity-lable">From Date <span>*</span></p>
         <nz-form-control>
-          <nz-date-picker formControlName="fromDate" class="w-full" nzFormat="dd/MM/yyyy"></nz-date-picker>
+          <nz-date-picker
+            formControlName="fromDate"
+            class="w-full"
+            nzFormat="dd/MM/yyyy"
+            (ngModelChange)="calculateLeaveDays()"
+          ></nz-date-picker>
         </nz-form-control>
         <p *ngIf="formErrors?.fromDate?.required" class="text-red-400 text-sm mt-1">
           From Date is required.
         </p>
       </nz-form-item>
-
+    
       <nz-form-item>
         <p class="infinity-lable">To Date <span>*</span></p>
         <nz-form-control>
-          <nz-date-picker formControlName="toDate" class="w-full" nzFormat="dd/MM/yyyy"></nz-date-picker>
+          <nz-date-picker
+            formControlName="toDate"
+            class="w-full"
+            nzFormat="dd/MM/yyyy"
+            (ngModelChange)="calculateLeaveDays()"
+          ></nz-date-picker>
         </nz-form-control>
         <p *ngIf="formErrors?.toDate?.required" class="text-red-400 text-sm mt-1">
           To Date is required.
         </p>
       </nz-form-item>
+    
       <nz-form-item>
         <p class="infinity-lable">Leave Days</p>
         <nz-form-control>
@@ -129,7 +162,9 @@
             style="background-color: #f5f5f5; cursor: not-allowed;" />
         </nz-form-control>
       </nz-form-item>
-
+   
+    
+      
       <!-- Leave Reason -->
       <nz-form-item>
         <p class="infinity-lable">Leave Reason <span>*</span></p>
