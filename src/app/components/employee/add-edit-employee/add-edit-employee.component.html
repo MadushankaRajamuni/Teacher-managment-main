@@ -43,7 +43,7 @@
               }
             </nz-form-item>
 
-            <nz-form-item>
+            <!-- <nz-form-item>
               <p class="infinity-lable">Job Title <span>*</span></p>
               <nz-form-control>
                 <nz-input-group nzSize="large">
@@ -53,7 +53,24 @@
               @if (formErrors?.jobTitle?.required) {
                 <p class="text-red-400 text-sm mt-1">Title is required.</p>
               }
+            </nz-form-item> -->
+            <nz-form-item>
+              <p class="infinity-lable">Job Title <span>*</span></p>
+              <nz-form-control>
+                <nz-select 
+                  nzSize="large" 
+                  formControlName="jobTitle" 
+                  nzPlaceHolder="Select Job Title">
+                  <nz-option nzValue="Teacher" nzLabel="Teacher"></nz-option>
+                  <nz-option nzValue="Principal" nzLabel="Principal"></nz-option>
+                  <nz-option nzValue="Vice Principal" nzLabel="Vice Principal"></nz-option>
+                </nz-select>
+              </nz-form-control>
+              @if (formErrors?.jobTitle?.required) {
+                <p class="text-red-400 text-sm mt-1">Title is required.</p>
+              }
             </nz-form-item>
+            
 
             <nz-form-item>
               <p class="infinity-lable">NIC <span>*</span></p>

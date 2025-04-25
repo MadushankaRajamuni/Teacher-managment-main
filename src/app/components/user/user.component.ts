@@ -19,6 +19,7 @@ import {NzModalModule, NzModalService} from 'ng-zorro-antd/modal';
 import {EmployeeService} from '../../core/services/employee.service';
 import {NzImageDirective, NzImageModule} from 'ng-zorro-antd/image';
 import {TruncateTextPipe} from '../../core/pipes/truncate-text.pipe';
+import {UserService} from '../../core/services/user.service';
 
 
 @Component({
@@ -76,7 +77,8 @@ export class UserComponent {
   constructor(private departService: DepartmentService,
               private notification: NzNotificationService,
               private modalService: NzModalService,
-              private employeeService: EmployeeService,) {
+              private employeeService: EmployeeService,
+              private userService: UserService) {
   }
 
   ngOnInit() {
@@ -84,33 +86,31 @@ export class UserComponent {
   }
 
 
-  async loadTableData(): Promise<void> {
+async loadTableData(): Promise<void> {
+  this.loading = true;
+  try {
+    const response = await this.userService.getPagedUsers({
+      filters: {
+        status: this.status,
+        searchTerm: this.searchTerm,
+        depart: this.depart,
+      },
+      pageIndex: this.pageIndex,
+      pageSize: this.pageSize,
+      sortOrder: this.sortOrder,
+    })
+
+    const pagedData = response as any;
+    this.tableData = pagedData.users;
+    this.totalRecords  = pagedData.total;
     this.loading = true;
-    try {
-      const response = await this.employeeService.getPagedEmployee({
-        filters: {
-          status: this.status,
-          searchTerm: this.searchTerm,
-          depart: this.depart,
-        },
-        pageIndex: this.pageIndex,
-        pageSize: this.pageSize,
-        sortOrder: this.sortOrder,
-      });
-  
-      const pagedData = response as any;
-      // Filter data to include only employees with jobTitle 'Teacher'
-      this.tableData = pagedData[0]?.data.filter((employee: any) => employee.jobTitle === "Teacher");
-  
-      this.totalRecords = pagedData[0]?.metadata[0]?.total;
-      this.loading = false;
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.loading = false;
-    }
+  } catch (e) {
+    console.error(e)
+  } finally {
+    this.loading = false;
   }
-  
+}
+
 
   onSearch(){
     this.loadTableData()
