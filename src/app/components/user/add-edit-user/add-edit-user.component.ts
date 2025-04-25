@@ -25,6 +25,7 @@ import {Observable, Observer} from 'rxjs';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {FileService} from '../../../core/services/file.service';
 import {Router} from '@angular/router';
+import { DepartmentService } from '../../../core/services/department.service';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -34,6 +35,14 @@ import {Router} from '@angular/router';
   standalone: true
 })
 export class AddEditUserComponent implements OnInit {
+  depName = [
+    { label: 'Primary', value: 'PRIMARY' },
+    { label: 'Junior Secondary', value: 'JUNIOR_SECONDARY' },
+    { label: 'Ordinary Level', value: 'ORDINARY_LEVEL' },
+    { label: 'Advanced Level', value: 'ADVANCED_LEVEL' },
+    { label: 'Finance Section', value: 'FINANCE_SECTION' }
+  ];
+  
   breadcrumbs: any[] = [
     {
       name: "Home",
@@ -52,6 +61,8 @@ export class AddEditUserComponent implements OnInit {
   formErrors: any;
   uploading = false;
   imageUrl?: string;
+  loading = false
+  departments: any = []
 
   constructor(private rolesService: RoleService,
               private fb: NonNullableFormBuilder,
@@ -59,6 +70,7 @@ export class AddEditUserComponent implements OnInit {
               private userService: UserService,
               private messageService: NzMessageService,
               private fileService: FileService,
+              private departService: DepartmentService,
               protected router: Router,) {
     this.formErrors = {
       firstname: {},
@@ -66,13 +78,15 @@ export class AddEditUserComponent implements OnInit {
       email: {},
       role: {},
       mobile: {},
+      nic: {},
+      department: {},
     }
 
   }
 
   ngOnInit() {
     this.initUserForm();
-    Promise.all([ this.loadRoles()])
+    Promise.all([ this.loadRoles(),this.loadDepartsData()])
   }
 
   initUserForm(): any {
@@ -81,6 +95,7 @@ export class AddEditUserComponent implements OnInit {
       lastname: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
       role: [null, Validators.required],
+      nic: [null, Validators.required],
       mobile: [null, [
         Validators.compose([
           Validators.required,
@@ -89,13 +104,25 @@ export class AddEditUserComponent implements OnInit {
         ]),
       ],
       ],
+      department: [null, Validators.required]
     });
-
+  
     this.userForm.valueChanges.subscribe(() => {
       this.formErrors = AppUtils.getFormErrors(this.userForm, this.formErrors);
     });
   }
-
+  
+  async loadDepartsData(): Promise<void> {
+    this.loading = true
+    try {
+      const response = await this.departService.getActiveDeparts()
+      this.departments = response
+    } catch (e: any) {
+      console.error(e)
+    } finally {
+      this.loading = false
+    }
+  }
 
   async loadRoles(): Promise<any> {
     try {
