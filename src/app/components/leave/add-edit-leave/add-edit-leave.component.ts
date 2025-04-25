@@ -180,27 +180,45 @@ export class AddEditLeaveComponent implements OnInit {
         labels: this.leaveBalances.map(lb => lb.type),
         datasets: [
           {
-            label: 'Available Days',
-            backgroundColor: '#52c41a',
-            data: this.leaveBalances.map(lb => lb.availableDays),
+            label: 'Used Days',
+            data: this.leaveBalances.map(lb => lb.used),
+            backgroundColor: '#f5222d', // Red for used days
           },
           {
-            label: 'Used Days',
-            backgroundColor: '#f5222d',
-            data: this.leaveBalances.map(lb => lb.usedDays),
-          },
-        ],
+            label: 'Available Days',
+            data: this.leaveBalances.map(lb => lb.available),
+            backgroundColor: '#52c41a', // Green for available days
+          }
+        ]
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
-          legend: { position: 'top' },
+          legend: {
+            position: 'top'
+          },
           tooltip: {
             callbacks: {
               label: function (context: any) {
                 return `${context.dataset.label}: ${context.raw}`;
               }
             }
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Leave Type'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Days'
+            },
+            beginAtZero: true
           }
         }
       }
