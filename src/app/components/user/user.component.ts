@@ -85,31 +85,56 @@ export class UserComponent {
     Promise.all([ this.loadTableData()], )
   }
 
-
-async loadTableData(): Promise<void> {
-  this.loading = true;
-  try {
-    const response = await this.userService.getPagedUsers({
-      filters: {
-        status: this.status,
-        searchTerm: this.searchTerm,
-        depart: this.depart,
-      },
-      pageIndex: this.pageIndex,
-      pageSize: this.pageSize,
-      sortOrder: this.sortOrder,
-    })
-
-    const pagedData = response as any;
-    this.tableData = pagedData.users;
-    this.totalRecords  = pagedData.total;
+  async loadTableData(): Promise<void> {
     this.loading = true;
-  } catch (e) {
-    console.error(e)
-  } finally {
-    this.loading = false;
+    try {
+      const response = await this.userService.getPagedUsers({
+        filters: {
+          status: this.status,
+          searchTerm: this.searchTerm,
+          depart: this.depart,
+        },
+        pageIndex: 0,  // Set to 0 for fetching all data from the beginning
+        pageSize: 1000, // Set a large pageSize (e.g., 1000) to fetch all records in one go, adjust as necessary
+        sortOrder: this.sortOrder,
+      });
+  
+      const pagedData = response as any;
+      this.tableData = pagedData.users;
+      this.totalRecords = pagedData.total;
+      this.loading = false; 
+    } catch (e) {
+      console.error(e);
+      this.loading = false; 
+    } finally {
+      this.loading = false; 
+    }
   }
-}
+  
+// async loadTableData(): Promise<void> {
+//   this.loading = true;
+//   try {
+//     const response = await this.userService.getPagedUsers({
+//       filters: {
+//         status: this.status,
+//         searchTerm: this.searchTerm,
+//         depart: this.depart,
+//       },
+//       pageIndex: this.pageIndex,
+//       pageSize: this.pageSize,
+//       sortOrder: this.sortOrder,
+//     })
+
+//     const pagedData = response as any;
+//     this.tableData = pagedData.users;
+//     this.totalRecords  = pagedData.total;
+//     this.loading = true;
+//   } catch (e) {
+//     console.error(e)
+//   } finally {
+//     this.loading = false;
+//   }
+// }
 
 
   onSearch(){
