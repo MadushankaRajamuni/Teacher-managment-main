@@ -12,8 +12,18 @@ export class DashboardService {
   getSummary(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http.get(`${SETTINGS.BASE_API}/dashboard/summary`).subscribe({
-        next: (response: any) => resolve(response),
-        error: (error: any) => reject(error)
+        next: (response: any) => {
+          console.log('Dashboard summary API response:', response);
+          // Add pending approvals count if not present
+          if (!response.pendingApprovals) {
+            response.pendingApprovals = 0;
+          }
+          resolve(response);
+        },
+        error: (error: any) => {
+          console.error('Dashboard summary API error:', error);
+          reject(error);
+        }
       });
     });
   }

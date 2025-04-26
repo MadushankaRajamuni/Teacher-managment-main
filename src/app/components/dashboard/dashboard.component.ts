@@ -4,6 +4,8 @@ import { ChartConfiguration, ChartDataset } from 'chart.js';
 import { CommonModule } from '@angular/common';
 import { NgChartsModule, BaseChartDirective } from 'ng2-charts';
 import { Router } from '@angular/router';
+import { UserService } from '../../core/services/user.service';
+import { LeaveService } from '../../core/services/leave.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -271,6 +273,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   constructor(
     private dashboardService: DashboardService,
+    private userService: UserService,
+    private leaveService: LeaveService,
     private cdr: ChangeDetectorRef,
     private router: Router
   ) {}
@@ -299,18 +303,53 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   async loadSummary() {
     try {
       const res = await this.dashboardService.getSummary();
-      this.departmentCount = res.departments;
-      this.employeeCount = res.employees;
-      this.userCount = res.users;
-      this.leavesToday = res.leavesToday;
+      console.log('Dashboard summary response:', res); // Debug log
+      
+      this.departmentCount = res.departments || 0;
+      this.employeeCount = res.employees || 0;
+      this.userCount = res.users || 0;
+      this.leavesToday = res.leavesToday || 0;
       this.pendingApprovals = res.pendingApprovals || 0;
 
-      // Update summary cards
-      this.summaryCards[0].count = this.departmentCount;
-      this.summaryCards[1].count = res.teachers; // Use the teachers count from the backend
-      this.summaryCards[2].count = this.userCount;
-      this.summaryCards[3].count = this.leavesToday;
-      this.summaryCards[4].count = this.pendingApprovals;
+      // Get teachers count
+      const userResponse = await this.userService.getPagedUsers({
+        filters: {
+          status: true,
+          searchTerm: '',
+        },
+        pageIndex: 0,
+        pageSize: 1000,
+        sortOrder: -1,
+      });
+
+      const teachers = userResponse.users.filter((user: any) => 
+        user.role?.name === 'TEACHER' || user.role?.name === 'SUPER_ADMIN'
+      );
+      const teacherCount = teachers.length;
+
+      // Update summary cards with a new array to trigger change detection
+      this.summaryCards = [
+        {
+          ...this.summaryCards[0],
+          count: this.departmentCount
+        },
+        {
+          ...this.summaryCards[1],
+          count: teacherCount
+        },
+        {
+          ...this.summaryCards[2],
+          count: this.userCount
+        },
+        {
+          ...this.summaryCards[3],
+          count: this.leavesToday
+        },
+        {
+          ...this.summaryCards[4],
+          count: this.pendingApprovals
+        }
+      ];
 
       // Update chart data
       this.summaryBarChartData = {
@@ -319,13 +358,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           ...this.summaryBarChartData.datasets[0],
           data: [
             this.departmentCount,
-            res.teachers, // Update chart with teachers count
+            teacherCount,
             this.userCount
           ]
         }]
       };
 
       this.dataLoaded.summary = true;
+      
+      // Force change detection
       this.cdr.detectChanges();
       
       // Update chart after data is loaded
