@@ -307,7 +307,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
       // Update summary cards
       this.summaryCards[0].count = this.departmentCount;
-      this.summaryCards[1].count = this.employeeCount;
+      this.summaryCards[1].count = res.teachers; // Use the teachers count from the backend
       this.summaryCards[2].count = this.userCount;
       this.summaryCards[3].count = this.leavesToday;
       this.summaryCards[4].count = this.pendingApprovals;
@@ -319,7 +319,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           ...this.summaryBarChartData.datasets[0],
           data: [
             this.departmentCount,
-            this.employeeCount,
+            res.teachers, // Update chart with teachers count
             this.userCount
           ]
         }]
