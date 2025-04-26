@@ -13,7 +13,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { AppUtils } from '../../../core/config/app.utils';
 import { Chart } from 'chart.js';
-import { UserService } from '../../../core/services/user.service';  
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-add-edit-leave',
@@ -55,7 +55,7 @@ export class AddEditLeaveComponent implements OnInit {
   leaveBalances: any[] = [];
 
   teachers: any[] = [];
-  
+
 
   constructor(
     private fb: NonNullableFormBuilder,
@@ -113,14 +113,14 @@ export class AddEditLeaveComponent implements OnInit {
     }
 
     this.fetchLeaveBalances();
-    
+
   }
 
   async loadUsersData(): Promise<void> {
     this.loading = true;
     try {
-      const response = await this.userService.getPagedUsers({}); 
-   
+      const response = await this.userService.getPagedUsers({});
+
       this.userList = response.users.filter((user: any) => user.role?.name === 'TEACHER');
     } catch (e) {
       console.error(e);
@@ -128,7 +128,7 @@ export class AddEditLeaveComponent implements OnInit {
       this.loading = false;
     }
   }
-  
+
 
   initLeaveForm(): void {
     this.leaveForm = this.fb.group({
@@ -227,32 +227,37 @@ export class AddEditLeaveComponent implements OnInit {
     });
   }
 
-  calculateLeaveDays(): void {
-    const fromDate = this.leaveForm.value.fromDate ? new Date(this.leaveForm.value.fromDate) : null;
-    const toDate = this.leaveForm.value.toDate ? new Date(this.leaveForm.value.toDate) : null;
-    
-    // Ensure that both fromDate and toDate are selected before calculating leave days
-    if (fromDate && toDate && fromDate <= toDate) {
-      fromDate.setHours(0, 0, 0, 0); // Start of day
-      toDate.setHours(23, 59, 59, 999); // End of day
-    
-      const timeDiff = Math.abs(toDate.getTime() - fromDate.getTime());
-      this.leaveDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // Add 1 to include both start and end day
-    
-      // Set the calculated leave days in the form
-      this.leaveForm.get('leaveDays')?.setValue(this.leaveDays);
-    } else {
-      this.leaveForm.get('leaveDays')?.setValue(null); // If dates are invalid, clear the leave days
+calculateLeaveDays(): void {
+  const fromDate = this.leaveForm.value.fromDate ? new Date(this.leaveForm.value.fromDate) : null;
+  const toDate = this.leaveForm.value.toDate ? new Date(this.leaveForm.value.toDate) : null;
+
+  if (fromDate && toDate && fromDate <= toDate) {
+    let currentDate = new Date(fromDate);
+    let workingDays = 0;
+
+    while (currentDate <= toDate) {
+      const day = currentDate.getDay();
+      if (day !== 0 && day !== 6) {
+        workingDays++;
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
     }
+
+    this.leaveDays = workingDays;
+    this.leaveForm.get('leaveDays')?.setValue(this.leaveDays);
+  } else {
+    this.leaveForm.get('leaveDays')?.setValue(null);
   }
-  
-  
+}
+
+
+
 
   async submitLeaveApplication(): Promise<void> {
     if (this.leaveForm.valid) {
       this.loading = true;
       const payload = this.leaveForm.getRawValue();
-  
+
       try {
         if (this.isEditLeave && this.leaveId) {
           await this.leaveService.updateLeave({ id: this.leaveId, ...payload });
@@ -272,5 +277,5 @@ export class AddEditLeaveComponent implements OnInit {
       console.log('Form is invalid');
     }
   }
-  
+
 }
