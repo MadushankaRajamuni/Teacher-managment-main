@@ -1,8 +1,8 @@
 <nz-layout class="">
   <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" class="">
     <div class="flex h-[200dvh] flex-col pb-3">
-      <div class="logo" [ngClass]="{'': !isCollapsed, 'hidden': isCollapsed}">
-        <img src="/assets/logo.png" class="w-16 h-16 object-contain" alt="Logo">
+      <div class="logo flex justify-center items-center" [ngClass]="{'': !isCollapsed, 'hidden': isCollapsed}">
+        <img src="/assets/logo.png" class="w-24 h-24 object-contain" alt="Logo">
       </div>
       <ul nz-menu nzTheme="dark" nzMode="inline">
         <li nz-menu-item (click)="routeLink('DASHBOARD')"
@@ -10,7 +10,7 @@
           <nz-icon nzType="dashboard"/>
           <span>Dashboard</span>
         </li>
-        @if (loggedInUser?.role?.name === 'SUPER_ADMIN' || loggedInUser?.role?.name === 'CLERK') {
+        @if (loggedInUser?.role?.name === 'ADMIN' || loggedInUser?.role?.name === 'CLERK') {
         <li nz-submenu nzTitle="Admins/Users" nzIcon="user">
           <ul>
             <li nz-menu-item (click)="routeLink('USERS')"
@@ -20,11 +20,11 @@
           </ul>
         </li>
       }
-        
-@if (loggedInUser?.role?.name === 'SUPER_ADMIN' || loggedInUser?.role?.name === 'CLERK') {
+
+@if (loggedInUser?.role?.name === 'ADMIN' || loggedInUser?.role?.name === 'CLERK') {
         <li nz-submenu nzTitle="Employees" nzIcon="team">
           <ul>
-    
+
             <li nz-submenu nzTitle="View Employees">
               <ul>
                 <li nz-menu-item (click)="routeLink('ACADAMIC')"
@@ -37,7 +37,7 @@
                 </li>
               </ul>
             </li>
-        
+
             <!-- Regular menu item -->
             <li nz-menu-item (click)="routeLink('EMPLOYEE_ADD')"
                 [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE_ADD'), true)">
@@ -55,7 +55,7 @@
           </ul>
         </li>
       } -->
-          
+
         <li nz-submenu nzTitle="Leave" nzIcon="schedule">
           <ul>
             <li nz-menu-item (click)="routeLink('LEAVE')"
@@ -64,7 +64,7 @@
                 [nzSelected]="router.isActive(routeLinkActive('LEAVE_ADD'), true)">Add Leave</li>
           </ul>
         </li>
-        @if (loggedInUser?.role?.name === 'SUPER_ADMIN' || loggedInUser?.role?.name === 'CLERK') {
+        @if (loggedInUser?.role?.name === 'ADMIN' || loggedInUser?.role?.name === 'CLERK') {
         <li nz-submenu nzTitle="Section" nzIcon="branches">
           <ul>
             <li nz-menu-item (click)="routeLink('DEPART')"
