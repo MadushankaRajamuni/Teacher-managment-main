@@ -1,23 +1,20 @@
 <app-breadcrumb [crumbs]="breadcrumbs" />
 <div class="inner-content flex flex-wrap">
-  <div class="w-full md:w-1/2 p-4">
-    <p class="infinity-title text-center">
-      {{ isEditLeave ? 'Update Leave Application' : 'Leave Application' }}
-    </p>
-  </div>
-  <div class="w-full md:w-1/2 p-4">
-    <p class="infinity-title text-center">
-      Leave Balance
-    </p>
-  </div>
+  
  
-
+  
+ 
   <div *ngIf="loading" class="h-[400px]">
     <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
   </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
   <div class="w-full p-4 border-2 border-blue-500 rounded-lg" >
-  <form [formGroup]="leaveForm" nz-form [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
+    <div class="w-full md:w-1/2 p-4">
+      <h2 class="text-lg font-semibold text-center mb-4">
+        {{ isEditLeave ? 'Update Leave Application' : 'Leave Application' }}
+      </h2>
+    </div>
+  <form [formGroup]="leaveForm" nz-form [nzLayout]="'vertical'" class="flex-grow">
     <!-- Name -->
     <div class="grid grid-cols-1 gap-4">
       <!-- <nz-form-item>
@@ -203,7 +200,11 @@
 
 <!-- right div -->
 <div class="w-full p-4 border-2 border-blue-500 rounded-lg"> 
- 
+  <div class="w-full md:w-1/2 p-4">
+    <h2 class="text-lg font-semibold text-center mb-4">
+      Leave Balance
+    </h2>
+  </div>
   <div class="w-full p-4">
     
     <div class="overflow-x-auto mt-4">
