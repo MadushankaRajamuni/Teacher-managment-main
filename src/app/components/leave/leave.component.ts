@@ -20,6 +20,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NgClass } from '@angular/common';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../core/services/user.service';
 
 
 
@@ -72,16 +73,18 @@ export class LeaveComponent implements OnInit{
   pageSize: number = SETTINGS.PAGE_SIZE
   depLoading = false
   fallback = SETTINGS.PLACEHOLDER_IMG
+  userList: any[] = [];
 
 
   constructor(
     private notification: NzNotificationService,
     private modalService: NzModalService,
     private leaveService: LeaveService,
-    private message: NzMessageService,) {
+    private message: NzMessageService,
+    private userService: UserService) {
 }
 ngOnInit() {
-  Promise.all([ this.loadTableData()], )
+  Promise.all([this.loadTableData(), this.loadUsersData()])
 }
 openStatusMenu(item: any): void {
   console.log('Opening status menu for item:', item);
@@ -104,9 +107,42 @@ async updateLeaveStatus(id: string, status: string): Promise<void> {
   }
 }
 
+async loadUsersData(): Promise<void> {
+  try {
+    const response = await this.userService.getPagedUsers({}); 
+    this.userList = response.users.filter((user: any) => user.role?.name === 'TEACHER');
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+getTeacherName(teacherId: string): string {
+  const teacher = this.userList.find(user => user._id === teacherId);
+  return teacher ? `${teacher.firstname} ${teacher.lastname}` : teacherId;
+}
+
+formatReferenceNumber(refNo: string): string {
+  // If the reference number is a timestamp, format it as LV-YYYYMMDD-XXX
+  if (refNo && refNo.startsWith('Leave')) {
+    const timestamp = parseInt(refNo.replace('Leave', ''));
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `LV-${year}${month}${day}-${random}`;
+  }
+  return refNo;
+}
+
 async loadTableData(): Promise<void> {
   this.loading = true;
   try {
+    // First ensure we have the user data
+    if (this.userList.length === 0) {
+      await this.loadUsersData();
+    }
+
     const response = await this.leaveService.getPagedleave({
       filters: {
         status: this.status,
@@ -119,9 +155,12 @@ async loadTableData(): Promise<void> {
     })
 
     const pagedData = response as any;
-    this.tableData = pagedData[0]?.data;
-    this.totalRecords  = pagedData[0]?.metadata[0]?.total;
-    this.loading = true;
+    this.tableData = pagedData[0]?.data.map((item: any) => ({
+      ...item,
+      teacherName: this.getTeacherName(item.teacherName),
+      refNo: this.formatReferenceNumber(item.refNo)
+    }));
+    this.totalRecords = pagedData[0]?.metadata[0]?.total;
   } catch (e) {
     console.error(e)
   } finally {
