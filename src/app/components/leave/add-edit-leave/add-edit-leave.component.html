@@ -37,7 +37,7 @@
           Teacher Name is required.
         </p>
       </nz-form-item> -->
-      <nz-form-item>
+      <!-- <nz-form-item>
         <p class="infinity-lable">Teacher Name <span>*</span></p>
         <nz-form-control>
           <nz-select
@@ -53,7 +53,29 @@
         <p *ngIf="leaveForm.controls['teacherName'].hasError('required')" class="text-red-400 text-sm mt-1">
           Teacher Name is required.
         </p>
+      </nz-form-item> -->
+      <nz-form-item>
+        <p class="infinity-lable">Teacher Name <span>*</span></p>
+        <nz-form-control>
+          <nz-select
+            formControlName="teacherName"
+            nzPlaceHolder="Select User"
+            nzAllowClear
+            nzShowSearch
+          >
+            <nz-option
+              *ngFor="let user of userList"
+              [nzValue]="user._id"
+              [nzLabel]="user.refNo + ' ' + user.firstname + ' ' + user.lastname"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+        <p *ngIf="leaveForm.controls['teacherName'].hasError('required')" class="text-red-400 text-sm mt-1">
+          Teacher Name is required.
+        </p>
       </nz-form-item>
+      
+      
       
       
       <nz-form-item>
@@ -102,22 +124,33 @@
       <nz-form-item>
         <p class="infinity-lable">From Date <span>*</span></p>
         <nz-form-control>
-          <nz-date-picker formControlName="fromDate" class="w-full" nzFormat="dd/MM/yyyy"></nz-date-picker>
+          <nz-date-picker
+            formControlName="fromDate"
+            class="w-full"
+            nzFormat="dd/MM/yyyy"
+            (ngModelChange)="calculateLeaveDays()"
+          ></nz-date-picker>
         </nz-form-control>
         <p *ngIf="formErrors?.fromDate?.required" class="text-red-400 text-sm mt-1">
           From Date is required.
         </p>
       </nz-form-item>
-
+    
       <nz-form-item>
         <p class="infinity-lable">To Date <span>*</span></p>
         <nz-form-control>
-          <nz-date-picker formControlName="toDate" class="w-full" nzFormat="dd/MM/yyyy"></nz-date-picker>
+          <nz-date-picker
+            formControlName="toDate"
+            class="w-full"
+            nzFormat="dd/MM/yyyy"
+            (ngModelChange)="calculateLeaveDays()"
+          ></nz-date-picker>
         </nz-form-control>
         <p *ngIf="formErrors?.toDate?.required" class="text-red-400 text-sm mt-1">
           To Date is required.
         </p>
       </nz-form-item>
+    
       <nz-form-item>
         <p class="infinity-lable">Leave Days</p>
         <nz-form-control>
@@ -129,7 +162,9 @@
             style="background-color: #f5f5f5; cursor: not-allowed;" />
         </nz-form-control>
       </nz-form-item>
-
+   
+    
+      
       <!-- Leave Reason -->
       <nz-form-item>
         <p class="infinity-lable">Leave Reason <span>*</span></p>
@@ -168,20 +203,37 @@
 
 <!-- right div -->
 <div class="w-full p-4 border-2 border-blue-500 rounded-lg"> 
-  <h2 class="text-lg font-semibold text-center">Leave Balance</h2> 
-  <ul class="mt-4 space-y-2"> 
-    <li class="flex justify-between"> 
-      <span class="font-medium">Casual Leave:</span>
-      <span>5 Days</span>
-    </li>
-    <li class="flex justify-between">
-      <span class="font-medium">Sick Leave:</span>
-      <span>3 Days</span>
-    </li>
-    <li class="flex justify-between"> 
-      <span class="font-medium">Duty Leave:</span>
-      <span>10 Days</span>
-    </li>
-   
-  </ul>
+ 
+  <div class="w-full p-4">
+    
+    <div class="overflow-x-auto mt-4">
+      <table class="min-w-full border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-blue-500 text-white">
+            <th class="border border-gray-300 px-4 py-2 text-left">Leave Type</th>
+            <th class="border border-gray-300 px-4 py-2 text-right">Eligible</th>
+            <th class="border border-gray-300 px-4 py-2 text-right">Used</th>
+            <th class="border border-gray-300 px-4 py-2 text-right">Available</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let leave of leaveBalances" class="hover:bg-gray-100">
+            <td class="border border-gray-300 px-4 py-2">{{ leave.type }}</td>
+            <td class="border border-gray-300 px-4 py-2 text-right">{{ leave.eligible }} Days</td>
+            <td class="border border-gray-300 px-4 py-2 text-right">{{ leave.used }} Days</td>
+            <td class="border border-gray-300 px-4 py-2 text-right">{{ leave.available }} Days</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div>
+            <div class="w-full p-4 ">
+        <h2 class="text-lg font-semibold text-center">Leave Balance Chart</h2>
+        <div class="overflow-x-auto mt-4">
+          <canvas id="leaveBalanceChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

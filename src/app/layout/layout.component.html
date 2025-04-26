@@ -2,7 +2,7 @@
   <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" class="">
     <div class="flex h-[200dvh] flex-col pb-3">
       <div class="logo" [ngClass]="{'': !isCollapsed, 'hidden': isCollapsed}">
-        <img src="/assets/logo.png" class="w-full h-full object-contain" alt="Logo">
+        <img src="/assets/logo.png" class="w-16 h-16 object-contain" alt="Logo">
       </div>
       <ul nz-menu nzTheme="dark" nzMode="inline">
         <li nz-menu-item (click)="routeLink('DASHBOARD')"
@@ -16,23 +16,23 @@
             <li nz-menu-item (click)="routeLink('USERS')"
                 [nzSelected]="router.isActive(routeLinkActive('USERS'), true)">View Admins/Users</li>
             <li nz-menu-item (click)="routeLink('USERS_ADD')"
-                [nzSelected]="router.isActive(routeLinkActive('USERS_ADD'), true)">Add Admin</li>
+                [nzSelected]="router.isActive(routeLinkActive('USERS_ADD'), true)">Add Admin/User</li>
           </ul>
         </li>
       }
         
 @if (loggedInUser?.role?.name === 'SUPER_ADMIN' || loggedInUser?.role?.name === 'CLERK') {
-        <li nz-submenu nzTitle="Employees" nzIcon="user">
+        <li nz-submenu nzTitle="Employees" nzIcon="team">
           <ul>
     
             <li nz-submenu nzTitle="View Employees">
               <ul>
-                <li nz-menu-item (click)="routeLink('EMPLOYEE_ACADAMIC')"
-                    [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE_ACADAMIC'), true)">
+                <li nz-menu-item (click)="routeLink('ACADAMIC')"
+                    [nzSelected]="router.isActive(routeLinkActive('ACADAMIC'), true)">
                   Acadamic
                 </li>
-                <li nz-menu-item (click)="routeLink('EMPLOYEE_INACTIVE')"
-                    [nzSelected]="router.isActive(routeLinkActive('EMPLOYEE_NON_ACADAMIC'), true)">
+                <li nz-menu-item (click)="routeLink('NON_ACADAMIC')"
+                    [nzSelected]="router.isActive(routeLinkActive('NON_ACADAMIC'), true)">
                   Non-Acadamic
                 </li>
               </ul>
@@ -46,7 +46,7 @@
           </ul>
         </li>
       }
-      @if (loggedInUser?.role?.name === 'SUPER_ADMIN' || loggedInUser?.role?.name === 'CLERK') {
+      <!-- @if (loggedInUser?.role?.name === 'SUPER_ADMIN' || loggedInUser?.role?.name === 'CLERK') {
         <li nz-submenu nzTitle="Teachers" nzIcon="team">
           <ul>
             <li nz-menu-item (click)="routeLink('TEACHERS')"
@@ -54,7 +54,7 @@
             </li>
           </ul>
         </li>
-      }
+      } -->
           
         <li nz-submenu nzTitle="Leave" nzIcon="schedule">
           <ul>

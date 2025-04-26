@@ -83,12 +83,13 @@
                     <p class="emp-name text-nowrap">{{ (item.firstname + ' ' + item.lastname) | truncateText }}</p>
                   </div>
                 </td>
-
+                <td class="text-nowrap">{{ item.role.name }}</td>
                 <td class="text-nowrap"><a [href]="'mailto:' + item.email">{{ item.email }}</a></td>
-                <td class="text-nowrap"><a [href]="'mailto:' + item.email">{{ item.role }}</a></td>
+                <td class="text-nowrap">{{ item.nic }}</td>
+               
                 <td class="text-nowrap">
                   <a [href]="'mailto:' + item.email">{{ item.department ? item.department.depName : '-' }}</a>
-                <td>{{ item.nic }}</td>
+              
                 <td><a [href]="'tel:' + (item.mobile || '')">{{ item.mobile ? item.mobile : '-' }}</a></td>
                 <td>
                   <nz-switch [(ngModel)]="item.active" [nzCheckedChildren]="checkedTemplate"
