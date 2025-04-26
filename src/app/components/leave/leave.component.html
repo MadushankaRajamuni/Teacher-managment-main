@@ -36,35 +36,50 @@
   } @else {
   <div>
     @if (tableData && tableData.length > 0) {
-    <div class="overflow-x-auto mt-4">
-      <table class="min-w-full border-collapse border border-gray-300">
-        <thead>
-          <tr class="bg-blue-500 text-white">
-            <th class="border border-gray-300 px-4 py-2 text-center">Refference No</th>
-            <th class="border border-gray-300 px-4 py-2 text-center">Teacher Name</th>
-            <th class="border border-gray-300 px-4 py-2 text-center">Status</th>
-            <th class="border border-gray-300 px-4 py-2 text-center">Designation</th>
-            <th class="border border-gray-300 px-4 py-2 text-center">Leave Category</th>
-            <th class="border border-gray-300 px-4 py-2 text-center">Leave Type</th>
-            <th class="border border-gray-300 px-4 py-2 text-center">From Date</th>
-            <th class="border border-gray-300 px-4 py-2 text-center">To Date</th>
-            <th class="border border-gray-300 px-4 py-2 text-center">Leave Days</th>
-            <th class="border border-gray-300 px-4 py-2 text-center">Leave Reason</th>
-            <th class="border border-gray-300 px-4 py-2 text-center">Created Date</th>
-            <th class="border border-gray-300 px-4 py-2 text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of tableData" class="hover:bg-gray-100">
-            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.refNo }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-center">
-              <div class="flex items-center justify-center gap-2">
-                <img nz-image class="rounded-full bg-gray-200" width="30px" height="30px" nzDisablePreview
-                  [nzFallback]="fallback" [nzSrc]="item?.imageUrl" alt="" />
-                <p class="emp-name text-nowrap">{{ item.teacherName | truncateText }}</p>
-              </div>
-            </td>
-            <td class="border border-gray-300 px-4 py-2 text-center">
+    <nz-table #empTable class="mt-8" [nzData]="tableData" nzSize="middle" [nzOuterBordered]="true"
+      [nzScroll]="{ x: '2000px' }" nzTableLayout="fixed" [nzFrontPagination]="false">
+      <thead>
+        <tr class="text-center">
+          <th nzWidth="100px" class="infinity-thead text-start">Reference No</th>
+          <th>Teacher Name</th>
+          <th>Status</th>
+          <th>Designation</th>
+          <th>Leave Category</th>
+          <th>Leave Type</th>
+          <th>From Date</th>
+          <th>To Date</th>
+          <th>Leave Days</th>
+          <th>Leave Reason</th>
+          <th>
+            <div class="flex justify-center w-full items-center pr-2">
+              <span>Created Date</span>
+              @if (sortOrder === -1) {
+              <span class="cursor-pointer" (click)="sort()"><span nz-icon nzType="caret-up"
+                  nzTheme="outline"></span></span>
+              } @else {
+              <span class="cursor-pointer" (click)="sort()"><span nz-icon nzType="caret-down"
+                  nzTheme="outline"></span></span>
+              }
+            </div>
+          </th>
+          <th nzWidth="200px">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        @for (item of tableData; track item._id) {
+        <tr class="text-center">
+          <td class="clickable-field text-start">{{ item.refNo }}</td>
+          <td>
+            <div class="flex items-center gap-2">
+              <img nz-image class="rounded-full bg-gray-200" width="30px" height="30px" nzDisablePreview
+                [nzFallback]="fallback" [nzSrc]="item?.imageUrl" alt="" />
+                <p class="emp-name text-nowrap">{{ item.teacherName| truncateText }}</p>
+
+         </div>
+          </td>
+          <!-- <td class="text-nowrap">
+            <div (click)="openStatusMenu(item)" nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
               <span
                 [ngClass]="{
                   'bg-yellow-400 text-black': item.status === 'Pending',
@@ -75,27 +90,64 @@
               >
                 {{ item.status }}
               </span>
-            </td>
-            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.designation | truncateText }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.category }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.type }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.fromDate | date: 'mediumDate' }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.toDate | date: 'mediumDate' }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.leaveDays }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.reason }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.createdAt | date: 'mediumDate' }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-center">
-              <div class="flex justify-center items-center gap-2">
-                <button nz-button nzType="dashed" routerLink="/admin/employees/add-edit/{{ item._id }}">
-                  Edit
-                </button>
-                <button nz-button nzDanger nzType="primary">Delete</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            </div>
+
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="confirmStatusChange(item, 'Approved')">Approved</li>
+                <li nz-menu-item (click)="confirmStatusChange(item, 'Rejected')">Rejected</li>
+              </ul>
+            </nz-dropdown-menu>
+          </td> -->
+          <td class="text-nowrap">
+            <div
+              nz-dropdown
+              [nzDropdownMenu]="menu"
+              nzTrigger="click"
+              [nzDisabled]="(loggedInUser?.role?.name === 'TEACHER')"
+            >
+              <span
+                [ngClass]="{
+                  'bg-yellow-400 text-black': item.status === 'Pending',
+                  'bg-green-500 text-white': item.status === 'Approved',
+                  'bg-red-500 text-white': item.status === 'Rejected',
+                  'opacity-50 cursor-not-allowed': (loggedInUser?.role?.name === 'TEACHER')
+                }"
+                class="px-2 py-1 rounded text-xs cursor-pointer"
+              >
+                {{ item.status }}
+              </span>
+            </div>
+          
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="confirmStatusChange(item, 'Approved')">Approved</li>
+                <li nz-menu-item (click)="confirmStatusChange(item, 'Rejected')">Rejected</li>
+              </ul>
+            </nz-dropdown-menu>
+          </td>
+          
+
+          <td>{{ item.designation | truncateText }}</td>
+          <td>{{ item.category }}</td>
+          <td>{{ item.type }}</td>
+          <td>{{ item.fromDate | date: 'mediumDate' }}</td>
+          <td>{{ item.toDate | date: 'mediumDate' }}</td>
+          <td>{{item.leaveDays}}</td>
+          <td>{{ item.reason }}</td>
+          <td>{{ item.createdAt | date: 'mediumDate' }}</td>
+          <td class="flex justify-start items-center gap-2">
+            <button nz-button nzType="dashed" routerLink="/admin/employees/add-edit/{{item._id}}">
+              Edit
+            </button>
+            <button nz-button nzDanger nzType="primary">Delete</button>
+          </td>
+        </tr>
+        }
+
+      </tbody>
+
+    </nz-table>
     } @else if (tableData.length === 0) {
     <div class="text-center my-5">
       <div class="py-36 bg-[#FFF7F7] rounded-md border-[0.5px] border-[#BD1A43]">
