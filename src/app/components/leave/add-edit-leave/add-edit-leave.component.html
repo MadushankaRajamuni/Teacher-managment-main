@@ -1,13 +1,15 @@
 <app-breadcrumb [crumbs]="breadcrumbs" />
 <div class="inner-content flex flex-wrap">
-  
- 
-  
- 
+
+
+
+  @if (loading) {
   <div *ngIf="loading" class="h-[400px]">
     <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
   </div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+  }
+  @else {
+<section class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
   <div class="w-full p-4 border-2 border-blue-500 rounded-lg" >
     <div class="w-full md:w-1/2 p-4">
       <h2 class="text-lg font-semibold text-center mb-4">
@@ -71,10 +73,10 @@
           Teacher Name is required.
         </p>
       </nz-form-item>
-      
-      
-      
-      
+
+
+
+
       <nz-form-item>
         <p class="infinity-lable">Designation <span>*</span></p>
         <nz-form-control>
@@ -86,7 +88,7 @@
           Designation is required.
         </p>
       </nz-form-item>
-      
+
     </div>
 
     <!-- Leave Category & Type -->
@@ -132,7 +134,7 @@
           From Date is required.
         </p>
       </nz-form-item>
-    
+
       <nz-form-item>
         <p class="infinity-lable">To Date <span>*</span></p>
         <nz-form-control>
@@ -147,7 +149,7 @@
           To Date is required.
         </p>
       </nz-form-item>
-    
+
       <nz-form-item>
         <p class="infinity-lable">Leave Days</p>
         <nz-form-control>
@@ -159,9 +161,9 @@
             style="background-color: #f5f5f5; cursor: not-allowed;" />
         </nz-form-control>
       </nz-form-item>
-   
-    
-      
+
+
+
       <!-- Leave Reason -->
       <nz-form-item>
         <p class="infinity-lable">Leave Reason <span>*</span></p>
@@ -178,7 +180,7 @@
         </p>
       </nz-form-item>
 
-     
+
     </div>
 
     <!-- Submit Button -->
@@ -199,14 +201,14 @@
 </div>
 
 <!-- right div -->
-<div class="w-full p-4 border-2 border-blue-500 rounded-lg"> 
+<div class="w-full p-4 border-2 border-blue-500 rounded-lg">
   <div class="w-full md:w-1/2 p-4">
     <h2 class="text-lg font-semibold text-center mb-4">
       Leave Balance
     </h2>
   </div>
   <div class="w-full p-4">
-    
+
     <div class="overflow-x-auto mt-4">
       <table class="min-w-full border-collapse border border-gray-300">
         <thead>
@@ -237,4 +239,5 @@
       </div>
     </div>
   </div>
-</div>
+</section>
+}

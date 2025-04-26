@@ -92,7 +92,6 @@ export class UserComponent {
         filters: {
           status: this.status,
           searchTerm: this.searchTerm,
-          depart: this.depart,
         },
         pageIndex: 0,  
         pageSize: 1000, 

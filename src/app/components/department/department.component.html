@@ -24,9 +24,9 @@
   </div>
 
   @if (loading) {
-    <div class="h-[400px]">
-      <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
-    </div>
+  <div class="flex items-center justify-center h-[70vh]">
+    <nz-spin [nzSize]="'large'" nzTip="Loading Data..."></nz-spin>
+  </div>
   } @else {
     <div>
       @if (tableData && tableData.length > 0) {
@@ -61,8 +61,8 @@
                 <td class="text-left">{{ item.depName }}</td>
                 <td class="text-left">{{ item.description ? item.description : '-' }}</td>
                 <td class="text-left">
-                  <nz-switch 
-                    [(ngModel)]="item.active" 
+                  <nz-switch
+                    [(ngModel)]="item.active"
                     [nzCheckedChildren]="checkedTemplate"
                     [nzUnCheckedChildren]="checkedTemplate"
                     (ngModelChange)="onSwitchChange($event, item)">

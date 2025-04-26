@@ -21,6 +21,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NgClass } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../core/services/user.service';
+import { AuthService } from '../../modules/auth/services/auth.service';
 
 
 
@@ -74,6 +75,7 @@ export class LeaveComponent implements OnInit{
   depLoading = false
   fallback = SETTINGS.PLACEHOLDER_IMG
   userList: any[] = [];
+  loggedInUser: any;
 
 
   constructor(
@@ -81,10 +83,12 @@ export class LeaveComponent implements OnInit{
     private modalService: NzModalService,
     private leaveService: LeaveService,
     private message: NzMessageService,
-    private userService: UserService) {
+    private userService: UserService
+    , private authService: AuthService) {
 }
 ngOnInit() {
   Promise.all([this.loadTableData(), this.loadUsersData()])
+  this.getLoggedInUserDetails()
 }
 openStatusMenu(item: any): void {
   console.log('Opening status menu for item:', item);
@@ -114,6 +118,17 @@ async loadUsersData(): Promise<void> {
   } catch (e) {
     console.error(e);
   }
+}
+async getLoggedInUserDetails(): Promise<void> {
+  try {
+    const user = this.authService.getLoggedInUser()
+    this.loggedInUser = await this.userService.userDetailsById(user?.userId)
+  } catch (e) {
+    console.error('Error creating user:', e);
+  }
+}
+async logout(): Promise<void> {
+  await this.authService.logout();
 }
 
 getTeacherName(teacherId: string): string {
