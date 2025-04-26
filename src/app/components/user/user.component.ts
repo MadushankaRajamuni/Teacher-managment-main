@@ -1,4 +1,3 @@
-
 import {Component, OnInit} from '@angular/core';
 import {BreadcrumbComponent} from '../common/breadcrumb/breadcrumb.component';
 import {DatePipe} from "@angular/common";
@@ -88,25 +87,54 @@ export class UserComponent {
   async loadTableData(): Promise<void> {
     this.loading = true;
     try {
+      // Convert 1-based page index to 0-based for backend
+      const backendPageIndex = this.pageIndex - 1;
+      
+      console.log('Loading table data with page:', this.pageIndex, 'backend page:', backendPageIndex, 'size:', this.pageSize);
+      
       const response = await this.userService.getPagedUsers({
         filters: {
           status: this.status,
           searchTerm: this.searchTerm,
+          depart: this.depart,
         },
-        pageIndex: 0,  
-        pageSize: 1000, 
+        pageIndex: backendPageIndex,  // Send 0-based index to backend
+        pageSize: this.pageSize,
         sortOrder: this.sortOrder,
       });
   
+      console.log('Pagination response:', response);
       const pagedData = response as any;
+      
+      // Ensure we have valid data
+      if (!pagedData || !Array.isArray(pagedData.users)) {
+        console.error('Invalid response format:', pagedData);
+        this.notification.error('Error', 'Invalid data received from server');
+        return;
+      }
+      
       this.tableData = pagedData.users;
-      this.totalRecords = pagedData.total;
-      this.loading = false; 
+      this.totalRecords = pagedData.total || 0;
+      
+      // Log pagination state
+      console.log('Current page:', this.pageIndex);
+      console.log('Page size:', this.pageSize);
+      console.log('Total records:', this.totalRecords);
+      console.log('Current data length:', this.tableData.length);
+      
+      // Validate pagination state
+      if (this.tableData.length > this.pageSize) {
+        console.warn('Received more items than page size:', this.tableData.length, '>', this.pageSize);
+      }
+      
+      if (this.totalRecords < this.tableData.length) {
+        console.warn('Total records less than current data length:', this.totalRecords, '<', this.tableData.length);
+      }
     } catch (e) {
-      console.error(e);
-      this.loading = false; 
+      console.error('Error loading table data:', e);
+      this.notification.error('Error', 'Failed to load users. Please try again.');
     } finally {
-      this.loading = false; 
+      this.loading = false;
     }
   }
   
@@ -137,6 +165,7 @@ export class UserComponent {
 
 
   onSearch(){
+    this.pageIndex = 1; // Reset to first page on search
     this.loadTableData()
   }
 
@@ -144,10 +173,16 @@ export class UserComponent {
     this.status = null;
     this.depart = null;
     this.searchTerm = ''
+    this.pageIndex = 1; // Reset to first page on reset
     this.loadTableData()
   }
 
   onPageChange(pageIndex: number): void {
+    console.log('Page changed to:', pageIndex);
+    if (pageIndex < 1) {
+      console.warn('Invalid page index:', pageIndex);
+      return;
+    }
     this.pageIndex = pageIndex;
     this.loadTableData();
   }
