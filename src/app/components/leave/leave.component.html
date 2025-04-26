@@ -69,44 +69,33 @@
                 [ngClass]="{
                   'bg-yellow-400 text-black': item.status === 'Pending',
                   'bg-green-500 text-white': item.status === 'Approved',
-                  'bg-red-500 text-white': item.status === 'Rejected',
-                  'opacity-50 cursor-not-allowed': !(loggedInUser?.role?.name === 'ADMIN' || loggedInUser?.role?.name === 'CLERK')
+                  'bg-red-500 text-white': item.status === 'Rejected'
                 }"
                 class="px-2 py-1 rounded text-xs cursor-pointer"
               >
                 {{ item.status }}
               </span>
-            </div>
-
-            <nz-dropdown-menu #menu="nzDropdownMenu">
-              <ul nz-menu>
-                <li nz-menu-item (click)="confirmStatusChange(item, 'Approved')">Approved</li>
-                <li nz-menu-item (click)="confirmStatusChange(item, 'Rejected')">Rejected</li>
-              </ul>
-            </nz-dropdown-menu>
-          </td>
-
-
-          <td>{{ item.designation | truncateText }}</td>
-          <td>{{ item.category }}</td>
-          <td>{{ item.type }}</td>
-          <td>{{ item.fromDate | date: 'mediumDate' }}</td>
-          <td>{{ item.toDate | date: 'mediumDate' }}</td>
-          <td>{{item.leaveDays}}</td>
-          <td>{{ item.reason }}</td>
-          <td>{{ item.createdAt | date: 'mediumDate' }}</td>
-          <td class="flex justify-start items-center gap-2">
-            <button nz-button nzType="dashed" routerLink="/admin/employees/add-edit/{{item._id}}">
-              Edit
-            </button>
-            <button nz-button nzDanger nzType="primary">Delete</button>
-          </td>
-        </tr>
-        }
-
-      </tbody>
-
-    </nz-table>
+            </td>
+            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.designation | truncateText }}</td>
+            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.category }}</td>
+            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.type }}</td>
+            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.fromDate | date: 'mediumDate' }}</td>
+            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.toDate | date: 'mediumDate' }}</td>
+            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.leaveDays }}</td>
+            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.reason }}</td>
+            <td class="border border-gray-300 px-4 py-2 text-center">{{ item.createdAt | date: 'mediumDate' }}</td>
+            <td class="border border-gray-300 px-4 py-2 text-center">
+              <div class="flex justify-center items-center gap-2">
+                <button nz-button nzType="dashed" routerLink="/admin/employees/add-edit/{{ item._id }}">
+                  Edit
+                </button>
+                <button nz-button nzDanger nzType="primary">Delete</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     } @else if (tableData.length === 0) {
     <div class="text-center my-5">
       <div class="py-36 bg-[#FFF7F7] rounded-md border-[0.5px] border-[#BD1A43]">
