@@ -14,6 +14,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { AppUtils } from '../../../core/config/app.utils';
 import { Chart } from 'chart.js';
 import { UserService } from '../../../core/services/user.service';
+import {AuthService} from '../../../modules/auth/services/auth.service';
 
 @Component({
   selector: 'app-add-edit-leave',
@@ -55,6 +56,7 @@ export class AddEditLeaveComponent implements OnInit {
   leaveBalances: any[] = [];
 
   teachers: any[] = [];
+  leaveSummery:any;
 
 
   constructor(
@@ -64,7 +66,8 @@ export class AddEditLeaveComponent implements OnInit {
     private leaveService: LeaveService,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {
     this.formErrors = {
       teacherName: {},
@@ -113,7 +116,20 @@ export class AddEditLeaveComponent implements OnInit {
     }
 
     this.fetchLeaveBalances();
+    this.checkTeacherLogin()
+  }
 
+  async checkTeacherLogin(): Promise<void> {
+    try {
+      const user = this.authService.getLoggedInUser()
+     const loggedInUser = await this.userService.userDetailsById(user?.userId)
+     if (loggedInUser?.role?.name === 'TEACHER') {
+       this.leaveForm.get('teacherName').patchValue(loggedInUser?._id)
+       this.leaveForm.get('teacherName')?.disable();
+     }
+    } catch (e) {
+      console.error('Error creating user:', e);
+    }
   }
 
   async loadUsersData(): Promise<void> {
@@ -145,6 +161,10 @@ export class AddEditLeaveComponent implements OnInit {
     this.leaveForm.valueChanges.subscribe(() => {
       this.formErrors = AppUtils.getFormErrors(this.leaveForm, this.formErrors);
     });
+
+    this.leaveForm.get("teacherName").valueChanges.subscribe(() => {
+      this.getLeaveSummeryTeacher(this.leaveForm.get("teacherName").getRawValue())
+    });
   }
 
   async getOneLeave(): Promise<void> {
@@ -159,12 +179,26 @@ export class AddEditLeaveComponent implements OnInit {
     }
   }
 
+  async getLeaveSummeryTeacher(id: any): Promise<void> {
+    this.loading = true;
+    try {
+      const summery = await this.leaveService.getLeaveSummeryTeacher(id);
+      this.leaveBalances = this.leaveBalances.map((lb: any) => {
+        return {...lb, usedV: summery[lb.code]}
+      })
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loading = false;
+    }
+  }
+
 
   fetchLeaveBalances(): void {
     this.leaveBalances = [
-      { type: 'Casual Leave', availableDays: 5, usedDays: 2 },
-      { type: 'Sick Leave', availableDays: 3, usedDays: 1 },
-      { type: 'Other Leave', availableDays: 10, usedDays: 4 },
+      { code: "sick", type: 'Casual Leave', leaveCount: 5, usedV: 0 },
+      { code: "casual", type: 'Sick Leave', leaveCount: 3, usedV: 0 },
+      {code: "earned" , type: 'Other Leave', leaveCount: 10, usedV: 0 },
     ];
     this.renderLeaveBalanceChart();
   }

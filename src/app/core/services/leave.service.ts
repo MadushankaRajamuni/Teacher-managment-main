@@ -7,7 +7,7 @@ import {SETTINGS} from '../config/common.settings';
   providedIn: 'root'
 })
 export class LeaveService {
- 
+
     constructor(private http: HttpClient) {}
 
     createLeave(payload: any): Promise<any> {
@@ -47,10 +47,22 @@ export class LeaveService {
           });
         });
       }
-    
+
       getOneLeaveId(id: any): Promise<any> {
         return new Promise((resolve, reject) => {
           this.http.get(`${SETTINGS.BASE_API}/leave/lv/${id}`).subscribe({
+            next: (response: any) => {
+              resolve(response);
+            },
+            error: (error: any) => {
+              reject(error);
+            },
+          });
+        });
+      }
+  getLeaveSummeryTeacher(id: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+          this.http.get(`${SETTINGS.BASE_API}/leave/summery/${id}`).subscribe({
             next: (response: any) => {
               resolve(response);
             },

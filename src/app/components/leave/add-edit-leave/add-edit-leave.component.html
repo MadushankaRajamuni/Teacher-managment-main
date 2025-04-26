@@ -222,9 +222,9 @@
         <tbody>
           <tr *ngFor="let leave of leaveBalances" class="hover:bg-gray-100">
             <td class="border border-gray-300 px-4 py-2">{{ leave.type }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-right">{{ leave.eligible }} Days</td>
-            <td class="border border-gray-300 px-4 py-2 text-right">{{ leave.used }} Days</td>
-            <td class="border border-gray-300 px-4 py-2 text-right">{{ leave.available }} Days</td>
+            <td class="border border-gray-300 px-4 py-2 text-right">{{ leave?.leaveCount }} Days</td>
+            <td class="border border-gray-300 px-4 py-2 text-right">{{ leave?.usedV }} Days</td>
+            <td class="border border-gray-300 px-4 py-2 text-right">{{ leave?.leaveCount - leave?.usedV }} Days</td>
           </tr>
         </tbody>
       </table>
