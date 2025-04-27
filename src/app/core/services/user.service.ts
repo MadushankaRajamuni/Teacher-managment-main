@@ -46,4 +46,16 @@ export class UserService {
       });
     });
   }
+  updateUsers(payload: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.put(`${SETTINGS.BASE_API}/user/update`, payload).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          reject(error.error);
+        },
+      });
+    });
+  }
 }

@@ -83,7 +83,7 @@
                     <p class="emp-name text-nowrap">{{ (item.firstname + ' ' + item.lastname) | truncateText }}</p>
                   </div>
                 </td>
-                <td class="text-nowrap">{{ item.role.name }}</td>
+                <td class="text-nowrap">{{ item.role?.name }}</td>
                 <td class="text-nowrap"><a [href]="'mailto:' + item.email">{{ item.email }}</a></td>
                 <td class="text-nowrap">{{ item.nic }}</td>
                

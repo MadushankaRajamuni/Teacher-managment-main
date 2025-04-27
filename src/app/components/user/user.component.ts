@@ -207,25 +207,25 @@ export class UserComponent {
 
   showDeleteConfirm(item: any): void {
     this.modalService.confirm({
-      nzTitle: 'Are you sure delete this Employee?',
+      nzTitle: 'Are you sure delete this User?',
       nzOkText: 'Yes',
       nzOkType: 'primary',
       nzOkDanger: true,
-      nzOnOk: () => this.empDelete(item),
+      nzOnOk: () => this.userDelete(item),
       nzCancelText: 'No',
       nzOnCancel: () => console.log('Cancel')
     });
   }
 
-  async empDelete(item: any) {
+  async userDelete(item: any) {
     this.loading = true
     try {
       await this.employeeService.updateEmployee({id: item._id, archived: true, type: 'DELETE'})
-      this.notification.success('Success', `Employee delete successfully!`);
+      this.notification.success('Success', `User delete successfully!`);
       await this.loadTableData()
     } catch (e) {
       console.error(e)
-      this.notification.error('Error', 'Failed to update employee. Please try again.',);
+      this.notification.error('Error', 'Failed to update users. Please try again.',);
     } finally {
       this.loading = false
     }
